@@ -48,7 +48,7 @@ _wq.push({
 
 works in the browser console
 ```js
-console.log(document.querySelector('[aria-label="Klicken Sie hier, um den Ton einzuschalten"]').parentElement)
+console.log(document.querySelector('[aria-label="Klicken Sie hier, um den Ton einzuschalten"]').parentElement).dispatchEvent(new MouseEvent('click', { bubbles: true }))
 ```
 dont work inside the included js file :-(
 ```js
