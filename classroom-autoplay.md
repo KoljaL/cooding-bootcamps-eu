@@ -64,7 +64,51 @@ setTimeout(() => {
 
 ### garbage...
 
+
 ```js
+
+silentAutoPlay=false&autoPlay=true
+
+window._wq = window._wq || []
+_wq.push({
+  id: '_all',
+  onReady: function (video) {
+    // start the video but with no sound
+    video.play()
+
+  setTimeout(() => {
+    document.querySelector('[aria-label="Klicken Sie hier, um den Ton einzuschalten"]').parentElement.dispatchEvent(new MouseEvent('click', { bubbles: true }));
+    document.querySelector('body').dispatchEvent(new KeyboardEvent('keydown',{'keyCode':32,'which':32,'key': " ", 'charCode': 0,}));
+  }, 1500);
+    // click on next lecture link
+    video.bind('end', function () {
+      console.log('video end & next')
+      document.querySelector('a.smart-next__link--small').click()
+    })
+  }
+})
+```
+
+
+
+```js
+
+// simmulating a space press
+body.dispatchEvent(new KeyboardEvent('keydown',{'keyCode':32,'which':32}));
+
+document.querySelector('[id^="w-vulcan-v2-"]').dispatchEvent(new KeyboardEvent('keydown',{'keyCode':32,'which':32,'key': " ", 'charCode': 0,}));
+
+ document.addEventListener("keydown", (e)=>{console.log(e)}); 
+
+
+setTimeout(() => {
+  document.querySelector('[aria-label="Klicken Sie hier, um den Ton einzuschalten"]').parentElement.dispatchEvent(new MouseEvent('click', { bubbles: true }));
+  document.querySelector('body').dispatchEvent(new KeyboardEvent('keydown',{'keyCode':32,'which':32,'key': " ", 'charCode': 0,}));
+}, 1500);
+
+
+
+
 window._wq = window._wq || []
 _wq.push({
   id: '_all',
