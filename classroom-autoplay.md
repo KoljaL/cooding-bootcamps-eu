@@ -10,18 +10,13 @@ Browser extension to add js in websites
 - https://requestly.io/ 
 
 
-## this works
-exept the `options` so no autoplay with sound
+## this works 
 ```js
 window._wq = window._wq || []
 _wq.push({
   id: '_all',
-  // options: {
-  //   autoPlay: true,
-  //   silentAutoPlay: false,
-  //   muted: false
-  // },
   onReady: function (video) {
+    // start the video but with no sound
     video.play()
 
     // click on next lecture link
@@ -29,6 +24,22 @@ _wq.push({
       console.log('video end & next')
       document.querySelector('a.smart-next__link--small').click()
     })
+  }
+})
+```
+
+
+## this will not let the autoplay work
+either if tho code is insert brfore or after the page ist loaded
+
+```js
+window._wq = window._wq || []
+_wq.push({
+  id: '_all',
+    options: {
+      autoPlay: true,
+      silentAutoPlay: false,
+      muted: false
   }
 })
 ```
