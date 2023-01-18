@@ -8,15 +8,41 @@
   <link rel="icon" href="./img/favicon-dark.png" type="image/png" sizes="16x16">
   <title>Web Apps Foundation</title>
   <script>
-    var dataTheme = window.matchMedia('(prefers-color-scheme: dark)').matches ? 'dark' : 'light'
+    var dataTheme;
+    dataTheme = window.localStorage.getItem('data-theme') || '';
+    if (!dataTheme) {
+      dataTheme = window.matchMedia('(prefers-color-scheme: dark)').matches ? 'dark' : 'light'
+    }
     document.documentElement.setAttribute('data-theme', dataTheme)
   </script>
 
-  <script type="module" src="./js/md-block.js"></script>
-
-  <link rel="stylesheet" href="./css/almostclassless.css">
-  <link id="prism" rel="stylesheet" href="./css/prism-dark.css">
+  <!-- <link rel="stylesheet" href="./css/almostclassless.css"> -->
   <style>
+    @font-face {
+      font-family: Overpass-Light;
+      src: url('./font/Overpass-Light.woff2') format('woff2');
+    }
+
+    @font-face {
+      font-family: Overpass-Regular;
+      src: url('./font/Overpass-Medium.woff2') format('woff2');
+    }
+
+    :root,
+    [data-theme='light'] {
+      --background-color: #ccc;
+      --text-color: rgb(34, 34, 34);
+      --link-color: rgb(126, 115, 159);
+      background-color: var(--background-color);
+    }
+
+    [data-theme='dark'] {
+      --background-color: rgb(51, 51, 51);
+      --text-color: rgb(197, 197, 197);
+      --link-color: rgb(132, 103, 222);
+      background-color: var(--background-color);
+    }
+
     * {
       transition: color 0.5s, background-color 0.5s;
     }
@@ -25,117 +51,154 @@
       max-width: 1024px;
       margin: 0 auto;
       padding: 0 1rem;
+      background-color: var(--background-color);
+      color: var(--text-color);
+    }
+
+    h1,
+    h2,
+    h3,
+    h4,
+    h5,
+    h6,
+    label {
+      font-family: Overpass-Regular;
+    }
+
+    h1,
+    .browserTheme,
+    .storageThemeName {
+      color: var(--link-color);
+    }
+
+    button {
+      background-color: var(--link-color);
+      border: 1px solid black;
+      border-radius: .5rem;
+      color: var(--text-color);
+      cursor: pointer;
+      font-size: 0.9rem;
+      font-weight: 600;
+      padding: .25rem .5rem;
+    }
+
+    button:hover {
+      filter: brightness(1.2)
+    }
+
+    input[type="checkbox"] {
+      appearance: none;
+      width: 1.2rem;
+      height: 1.2rem;
+      border-radius: 3px;
+      border: 1px solid black;
+      box-shadow: inset 0 0 0 0.185rem var(--background-color);
+      background: var(--background-color);
+      vertical-align: text-top;
+    }
+
+    input[type="checkbox"]:checked {
+      background: var(--link-color);
     }
   </style>
 </head>
 
 <body>
 
-  <h1>Just my solutions</h1>
+  <h1>Web Apps Foundation</h1>
 
   <h2>Light Switch</h2>
 
-  <p>
-    Your browser is currently in <span class="theme"></span>.
+  <h3><span class="storageTheme"></span></h3>
+  <p style="display: flex;align-items: center;gap:.5rem;">
+    <label for="saveLocalStorage">Save to Local Storage</label>
+    <input type="checkbox" id="saveLocalStorage" name="saveLocalStorage" value="saveLocalStorage">
   </p>
-  <button class="toggleTheme"></button>
-  //Format off
-  <md-block>
+  <p>
+    <button onclick="reload()">reload</button>
+  </p>
+  <br>
+  <h3>Your browser is currently in <span class="browserTheme"></span>.</h3>
 
-    ## Markdown
-    ```javascript
-    <script>
-
-      async function generateTOC() {
-        var contentContainer = document.querySelector('main');
-        var headings = contentContainer.querySelectorAll('h1.forTOC, h2.forTOC, h3.forTOC, h4.forTOC, h5.forTOC, h6.forTOC');
-        var tocContainer = document.querySelector('.toc');
-        var ul = document.createElement('ul');
-        // Loop through the headings NodeList
-        for (i = 0; i <= headings.length - 1; i++) {
-          var id = headings[i].innerHTML.toLowerCase().replace(/ /g, '-');
-          var level = headings[i].localName.replace('h', '');
-          var title = headings[i].innerHTML; headings[i].setAttribute('id', id);
-          var anchor = document.createElement('a'); anchor.setAttribute('href', '#' + id);
-          anchor.setAttribute('class', 'anchor'); anchor.title = 'permalink';
-          anchor.innerHTML = ''; headings[i].appendChild(anchor);
-          var li = document.createElement('li'); var a = document.createElement('a');
-          a.setAttribute('href', '#' + id); a.innerHTML = title;
-          // Create the hierarchy 
-          if (level == 1) {
-            li.appendChild(a);
-            ul.appendChild(li);
-          }
-          else if (level == 2) {
-            child = document.createElement('ul');
-            li.appendChild(a); child.appendChild(li);
-            ul.appendChild(child);
-          }
-          else if (level == 3) {
-            grandchild = document.createElement('ul');
-            li.appendChild(a);
-            grandchild.appendChild(li);
-            child.appendChild(grandchild);
-          } else if (level == 4) {
-            great_grandchild = document.createElement('ul');
-            li.append(a);
-            great_grandchild.appendChild(li); grandchild.appendChild(great_grandchild);
-          }
-        } tocContainer.appendChild(ul); // return true; markerTOC(); } 
-    </script>
-
-    ```
-  </md-block>
+  <p>
+    <button class="toggleTheme"></button>
+  </p>
+  <br>
 
 
   <!-- END OF HTML -->
-  <script src="./js/prism.js"></script>
 
   <script>
-      // define variables for the elements we need to manipulate
-      const faviconEl = document.querySelector('link[rel="icon"]');
-      const title = document.querySelector('title');
-      const prism = document.querySelector('#prism');
-      const toggleThemeButton = document.querySelector('button.toggleTheme');
-      const themeName = document.querySelector('span.theme');
+    // define variables for the elements we need to manipulate
+    const faviconEl = document.querySelector('link[rel="icon"]');
+    const title = document.querySelector('title');
+    const toggleThemeButton = document.querySelector('button.toggleTheme');
+    const browserTheme = document.querySelector('.browserTheme');
+    var storageTheme = document.querySelector('.storageTheme');
+    var dataTheme = document.documentElement.getAttribute('data-theme', dataTheme)
 
-      console.log(prism)
+    // define eventListener  
+    toggleThemeButton.addEventListener('click', () => {
+      // toggle dataTheme 
+      // store localStorage
+      // set the theme
+      dataTheme = (dataTheme === 'light') ? 'dark' : 'light'
+      storeLocal()
+      setTheme()
+    });
 
-      // define eventListener  
-      toggleThemeButton.addEventListener('click', () => {
-        // toggle dataTheme and set the theme
-        dataTheme = (dataTheme === 'light') ? 'dark' : 'light'
-        setTheme()
+    // run the functions on page load
+    document.addEventListener('DOMContentLoaded', () => {
+      setTheme()
+    });
 
-      });
+    //
+    // store theme in localStorage (if checkbox checked) 
+    // reload the page
+    //
+    function reload() {
+      storeLocal()
+      window.location.reload();
+    }
 
-      // run the functions on page load
-      document.addEventListener('DOMContentLoaded', () => {
-        setTheme()
-      });
-
-
-
-
-      //
-      // Set the theme based on the data-theme attribute
-      //
-      function setTheme() {
-        if (dataTheme === 'dark') {
-          themeName.innerHTML = '<b>dark</b> mode';
-          toggleThemeButton.innerText = 'Switch to Light';
-          title.innerText = 'Dark Mode';
-          // prism.setAttribute('href', './css/prism-dark.css');
-          faviconEl.setAttribute('href', 'img/favicon-dark.png');
-        } else {
-          themeName.innerHTML = '<b>light</b> mode, or no mode is set';
-          toggleThemeButton.innerText = 'Switch to Dark';
-          title.innerText = 'Light Mode';
-          // prism.setAttribute('href', './css/prism-light.css');
-          faviconEl.setAttribute('href', 'img/favicon-light.png');
-        }
-        document.documentElement.setAttribute('data-theme', dataTheme);
+    //
+    // store theme in localStorage (if checkbox checked)
+    //
+    function storeLocal() {
+      if (saveLocalStorage.checked) {
+        window.localStorage.setItem('data-theme', dataTheme);
+      } else {
+        window.localStorage.removeItem('data-theme');
       }
+    }
+
+    //
+    // Set the theme based on the data-theme attribute
+    //
+    function setTheme() {
+      let themeInStorage = window.localStorage.getItem('data-theme');
+      if (themeInStorage) {
+        storageTheme.innerHTML = 'Theme stored in localStorage: <span class="storageThemeName">' + themeInStorage + '</span>';
+      } else {
+        storageTheme.innerHTML = 'no Theme stored in localStorage'
+      }
+
+      if (dataTheme === 'dark') {
+        browserTheme.innerHTML = '<b>dark</b> mode';
+        toggleThemeButton.innerText = 'Switch to Light';
+        title.innerText = 'Dark Mode';
+        // prism.setAttribute('href', './css/prism-dark.css');
+        faviconEl.setAttribute('href', 'img/favicon-dark.png');
+      } else {
+        browserTheme.innerHTML = '<b>light</b> mode, or no mode is set';
+        toggleThemeButton.innerText = 'Switch to Dark';
+        title.innerText = 'Light Mode';
+        // prism.setAttribute('href', './css/prism-light.css');
+        faviconEl.setAttribute('href', 'img/favicon-light.png');
+      }
+      document.documentElement.setAttribute('data-theme', dataTheme);
+
+    }
 
 
   </script>
