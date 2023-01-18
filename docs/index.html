@@ -5,19 +5,63 @@
   <meta charset="UTF-8">
   <meta http-equiv="X-UA-Compatible" content="IE=edge">
   <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <link rel="icon" href="./img/favicon-dark.png" type="image/png" sizes="16x16">
   <title>Web Apps Foundation</title>
-  <link rel="stylesheet" href="style.css">
+  <script>
+    var dataTheme = window.matchMedia('(prefers-color-scheme: dark)').matches ? 'dark' : 'light'
+    document.documentElement.setAttribute('data-theme', dataTheme)
+  </script>
+  <link rel="stylesheet" href="./css/almostclassless.css">
 </head>
 
 <body>
 
   <h1>Just my solutions</h1>
 
-  <h2>toggle Theme</h2>
+  <h2>Light Switch</h2>
+
+  <button class="toggleLight">
+    to Light
+  </button>
+
+
+
+  <script>
+    const faviconEl = document.querySelector('link[rel="icon"]');
+    const title = document.querySelector('title');
+    const toggleLightButton = document.querySelector('button.toggleLight');
+
+    toggleLightButton.addEventListener('click', () => {
+      dataTheme = (dataTheme === 'light') ? 'dark' : 'light'
+      toggleLight()
+
+    });
+
+    toggleLight()
 
 
 
 
+    function toggleLight() {
+      console.log(dataTheme)
+
+      if (dataTheme === 'light') {
+        toggleLightButton.innerText = 'Switch to Light';
+        dataTheme = 'dark';
+        title.innerText = 'Dark Mode';
+        faviconEl.setAttribute('href', 'img/favicon-dark.png');
+      } else {
+        toggleLightButton.innerText = 'Switch to Dark';
+        dataTheme = 'light';
+        title.innerText = 'Light Mode';
+        faviconEl.setAttribute('href', 'img/favicon-light.png');
+      }
+
+      document.documentElement.setAttribute('data-theme', dataTheme);
+    }
+
+
+  </script>
 </body>
 
 </html>

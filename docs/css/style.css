@@ -1,0 +1,178 @@
+:root {
+    --theme-toggle__classic--duration: 500ms;
+    --header-height: 4rem;
+    --nav-width: 20rem;
+    --max-content-width: 1024px;
+}
+
+html {
+    scroll-behavior: smooth;
+    scroll-padding-top: 5rem;
+}
+
+* {
+    transition: color var(--theme-toggle__classic--duration) ease, background-color var(--theme-toggle__classic--duration) ease;
+}
+
+body {
+    margin: 0 1rem;
+    padding: 0;
+}
+
+header {
+    position: sticky;
+    top: 0;
+    height: var(--header-height);
+    display: flex;
+    flex-direction: row;
+    justify-content: space-between;
+    align-items: end;
+    gap: 1rem;
+    padding-inline: 1rem;
+    background-color: var(--secondary-bg);
+    border-bottom: 1px solid var(--secondary);
+    z-index: 5;
+}
+
+article {
+    overflow-y: scroll;
+    height: 100%;
+    background-color: var(--secondary-bg);
+}
+
+nav {
+    width: calc(var(--nav-width) - 1rem);
+    position: fixed;
+    top: var(--header-height);
+    left: 100vw;
+    margin-left: 1rem;
+    max-height: calc(100vh - 5rem);
+    height: 100%;
+    overflow-y: auto;
+    transition: transform 0.5s ease-in-out;
+    overscroll-behavior: contain;
+    z-index: 100;
+}
+
+nav.show {
+    transform: translateX(calc(var(--nav-width) * -1 - 1rem));
+}
+
+footer {
+    position: sticky;
+    bottom: 0;
+    margin-bottom: -1rem;
+    /* padding-bottom: 0.5rem; */
+    z-index: -1;
+}
+
+.tocIcon {
+    cursor: pointer;
+    border: 1px solid red;
+    border-radius: 5px;
+    background-color: transparent;
+    content: '';
+    display: inline-block;
+    width: 2.5rem;
+    height: 2rem;
+    background-image: url("data:image/svg+xml,<svg width='32' height='28' viewBox='-5 -5 50 36' fill='red' xmlns='http://www.w3.org/2000/svg'> <path d='m 0 2 a 2 2 0 1 0 4 0 a 2 2 0 1 0 -4 0 m 8 -2 h 24 v 4 h -24 z m 0 10 a 2 2 0 1 0 4 0 a 2 2 0 1 0 -4 0 m 8 -2 h 16 v 4 h -16 z m -8 18 a 2 2 0 1 0 4 0 a 2 2 0 1 0 -4 0 m 8 -2 h 16 v 4 h -16 z m 0 -6 a 2 2 0 1 0 4 0 a 2 2 0 1 0 -4 0 m 8 -2 h 8 v 4 h -8 z' /></svg>");
+    background-size: cover;
+    background-repeat: no-repeat;
+    filter: hue-rotate(var(--primaryHI)) saturate(40%) brightness(110%);
+    transition: filter var(--theme-toggle__classic--duration) ease;
+}
+
+button.tocIcon:not(:disabled):not([disabled]):hover {
+    border: 1px solid red;
+    background-color: transparent;
+    filter: hue-rotate(var(--primaryHI)) saturate(40%) brightness(150%);
+}
+
+@media (min-width: 1024px) {
+    body {
+        margin-inline: max(calc((100vw - var(--nav-width) - var(--max-content-width)) / 2), 1rem);
+    }
+
+    header,
+    article,
+    footer {
+        width: calc(100vw - 2rem - var(--nav-width));
+        max-width: var(--max-content-width);
+    }
+
+    main {
+        display: flex;
+        flex-direction: row;
+        flex-wrap: nowrap;
+        position: relative;
+    }
+
+    nav {
+        position: sticky;
+        top: var(--header-height);
+        left: 0;
+        transition: transform 0s ease-in-out;
+    }
+
+    nav.show {
+        transform: translateX(0);
+    }
+
+    .tocIcon {
+        display: none;
+    }
+}
+
+header h1 {
+    margin: 0.75rem 0 0;
+}
+
+header h1.title a {
+    font-size: 2rem;
+}
+
+header .icons {
+    display: flex;
+    align-items: flex-start;
+}
+
+.flex {
+    display: flex;
+    flex-wrap: wrap;
+}
+
+.flex > * {
+    margin-right: 1rem;
+}
+
+article > section {
+    margin-bottom: 5rem;
+}
+
+section > h1,
+section > h2,
+section > h3,
+section > h4,
+section > h5,
+section > h6 {
+    margin-top: 4rem;
+    border-bottom: 1px solid var(--primary-light);
+    padding-right: 0rem;
+    width: fit-content;
+    position: relative;
+}
+
+section > h2:first-child {
+    margin-top: 2rem;
+}
+header label svg,
+.ghLink img {
+    width: 2.5rem;
+    height: 2.5rem;
+    filter: hue-rotate(var(--primaryHI)) saturate(40%) brightness(120%);
+    transition: all var(--theme-toggle__classic--duration) ease;
+}
+header label svg,
+.ghLink img:hover {
+    filter: hue-rotate(var(--primaryHI)) saturate(40%) brightness(150%);
+}

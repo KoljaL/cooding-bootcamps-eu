@@ -6,9 +6,11 @@
 /************************************************************/
 
 /* @media (prefers-color-scheme: light) {} */
-:root {
+:root,
+:root[data-theme='light'] {
     /* Colors */
     --primaryH: 210;
+    --primaryHI: 210deg;
     --primaryS: 50%;
     --primaryL: 40%;
     --primary-bg: hsl(0, 0%, 100%);
