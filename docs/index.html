@@ -11,12 +11,20 @@
     var dataTheme = window.matchMedia('(prefers-color-scheme: dark)').matches ? 'dark' : 'light'
     document.documentElement.setAttribute('data-theme', dataTheme)
   </script>
-  <script src="https://cdn.jsdelivr.net/npm/marked/marked.min.js"></script>
+
+  <script type="module" src="./js/md-block.js"></script>
 
   <link rel="stylesheet" href="./css/almostclassless.css">
+  <link id="prism" rel="stylesheet" href="./css/prism-dark.css">
   <style>
     * {
       transition: color 0.5s, background-color 0.5s;
+    }
+
+    body {
+      max-width: 1024px;
+      margin: 0 auto;
+      padding: 0 1rem;
     }
   </style>
 </head>
@@ -30,106 +38,109 @@
   <p>
     Your browser is currently in <span class="theme"></span>.
   </p>
-  <button class="toggleTheme">
-    to Light
-  </button>
-
-
-  <div class="tip" markdown="1">Have **fun!**</div>
-
-  <div class="warning" markdown="1">Don't forget to **drink your water**.</div>
-
-
-  <div id="content"></div>
-
-
-  <div class="markdown">
+  <button class="toggleTheme"></button>
+  //Format off
+  <md-block>
 
     ## Markdown
-
-
-
-    4 spaces or a tab indents a code block.
-
-
-
     ```javascript
-    var dataTheme = window.matchMedia('(prefers-color-scheme: dark)').matches ? 'dark' : 'light'
-    document.documentElement.setAttribute('data-theme', dataTheme)
-    ```
+    <script>
 
-  </div>
+      async function generateTOC() {
+        var contentContainer = document.querySelector('main');
+        var headings = contentContainer.querySelectorAll('h1.forTOC, h2.forTOC, h3.forTOC, h4.forTOC, h5.forTOC, h6.forTOC');
+        var tocContainer = document.querySelector('.toc');
+        var ul = document.createElement('ul');
+        // Loop through the headings NodeList
+        for (i = 0; i <= headings.length - 1; i++) {
+          var id = headings[i].innerHTML.toLowerCase().replace(/ /g, '-');
+          var level = headings[i].localName.replace('h', '');
+          var title = headings[i].innerHTML; headings[i].setAttribute('id', id);
+          var anchor = document.createElement('a'); anchor.setAttribute('href', '#' + id);
+          anchor.setAttribute('class', 'anchor'); anchor.title = 'permalink';
+          anchor.innerHTML = ''; headings[i].appendChild(anchor);
+          var li = document.createElement('li'); var a = document.createElement('a');
+          a.setAttribute('href', '#' + id); a.innerHTML = title;
+          // Create the hierarchy 
+          if (level == 1) {
+            li.appendChild(a);
+            ul.appendChild(li);
+          }
+          else if (level == 2) {
+            child = document.createElement('ul');
+            li.appendChild(a); child.appendChild(li);
+            ul.appendChild(child);
+          }
+          else if (level == 3) {
+            grandchild = document.createElement('ul');
+            li.appendChild(a);
+            grandchild.appendChild(li);
+            child.appendChild(grandchild);
+          } else if (level == 4) {
+            great_grandchild = document.createElement('ul');
+            li.append(a);
+            great_grandchild.appendChild(li); grandchild.appendChild(great_grandchild);
+          }
+        } tocContainer.appendChild(ul); // return true; markerTOC(); } 
+    </script>
+
+    ```
+  </md-block>
+
+
+  <!-- END OF HTML -->
+  <script src="./js/prism.js"></script>
 
   <script>
-    // define variables for the elements we need to manipulate
-    const faviconEl = document.querySelector('link[rel="icon"]');
-    const title = document.querySelector('title');
-    const toggleThemeButton = document.querySelector('button.toggleTheme');
-    const themeName = document.querySelector('span.theme');
+      // define variables for the elements we need to manipulate
+      const faviconEl = document.querySelector('link[rel="icon"]');
+      const title = document.querySelector('title');
+      const prism = document.querySelector('#prism');
+      const toggleThemeButton = document.querySelector('button.toggleTheme');
+      const themeName = document.querySelector('span.theme');
 
-    // define eventListener  
-    toggleThemeButton.addEventListener('click', () => {
-      // toggle dataTheme and set the theme
-      dataTheme = (dataTheme === 'light') ? 'dark' : 'light'
-      setTheme()
+      console.log(prism)
 
-    });
+      // define eventListener  
+      toggleThemeButton.addEventListener('click', () => {
+        // toggle dataTheme and set the theme
+        dataTheme = (dataTheme === 'light') ? 'dark' : 'light'
+        setTheme()
 
-    // run the functions on page load
-    document.addEventListener('DOMContentLoaded', () => {
-      setTheme()
-    });
+      });
+
+      // run the functions on page load
+      document.addEventListener('DOMContentLoaded', () => {
+        setTheme()
+      });
 
 
 
 
-    //
-    // Set the theme based on the data-theme attribute
-    //
-    function setTheme() {
-      if (dataTheme === 'dark') {
-        themeName.innerHTML = '<b>dark</b> mode';
-        toggleThemeButton.innerText = 'Switch to Light';
-        title.innerText = 'Dark Mode';
-        faviconEl.setAttribute('href', 'img/favicon-dark.png');
-      } else {
-        themeName.innerHTML = '<b>light</b> mode, or no mode is set';
-        toggleThemeButton.innerText = 'Switch to Dark';
-        title.innerText = 'Light Mode';
-        faviconEl.setAttribute('href', 'img/favicon-light.png');
+      //
+      // Set the theme based on the data-theme attribute
+      //
+      function setTheme() {
+        if (dataTheme === 'dark') {
+          themeName.innerHTML = '<b>dark</b> mode';
+          toggleThemeButton.innerText = 'Switch to Light';
+          title.innerText = 'Dark Mode';
+          // prism.setAttribute('href', './css/prism-dark.css');
+          faviconEl.setAttribute('href', 'img/favicon-dark.png');
+        } else {
+          themeName.innerHTML = '<b>light</b> mode, or no mode is set';
+          toggleThemeButton.innerText = 'Switch to Dark';
+          title.innerText = 'Light Mode';
+          // prism.setAttribute('href', './css/prism-light.css');
+          faviconEl.setAttribute('href', 'img/favicon-light.png');
+        }
+        document.documentElement.setAttribute('data-theme', dataTheme);
       }
-      document.documentElement.setAttribute('data-theme', dataTheme);
-    }
 
 
   </script>
 
-  <script type="module">
 
-    marked.setOptions({
-      renderer: new marked.Renderer(),
-      highlight: function (code, lang) {
-        const hljs = require('highlight.js');
-        const language = hljs.getLanguage(lang) ? lang : 'plaintext';
-        return hljs.highlight(code, {language}).value;
-      },
-      langPrefix: 'hljs language-', // highlight.js css expects a top-level 'hljs' class.
-      pedantic: false,
-      gfm: true,
-      breaks: true,
-      sanitize: false,
-      smartypants: false,
-      xhtml: false
-    });
-
-
-    document.getElementById('content').innerHTML =
-      marked.parse('# Marked in the browser\n\nRendered by **marked**.');
-
-    document.querySelectorAll('.markdown').forEach((block) => {
-      block.innerHTML = marked.parse(block.innerText);
-    });
-  </script>
 
 
 </body>

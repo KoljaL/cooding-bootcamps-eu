@@ -1,0 +1,214 @@
+/**
+ * atom-dark theme for `prism.js`
+ * Based on Atom's `atom-dark` theme: https://github.com/atom/atom-dark-syntax
+ * @author Joe Gibson (@gibsjose)
+ */
+
+:root,
+:root[data-theme='light'] {
+    --code-selection-bg: #36404d;
+    --code-bg: #1d1f21;
+    --code-comment: #7c7c7c;
+    --code-punctuation: #c5c8c6;
+    --code-key: #96cbfe;
+    --code-classname: #ffffb6;
+    --code-constant: #99cc99;
+    --code-symbol: #f92672;
+    --code-number: #ff73fd;
+    --code-string: #a8ff60;
+    --code-variable: #c6c5fe;
+    --code-generator: #ededed;
+    --code-help: #ffffb6;
+    --code-url: #96cbfe;
+    --code-language: #87c38a;
+    --code-attrule: #f9ee98;
+    --code-function: #dad085;
+    --code-regex: #e9c062;
+    --code-important: #fd971f;
+}
+:root[data-theme='dark'] {
+    --code-selection-bg: #36404d;
+    --code-bg: #1d1f21;
+    --code-comment: #7c7c7c;
+    --code-punctuation: #c5c8c6;
+    --code-key: #96cbfe;
+    --code-classname: #ffffb6;
+    --code-constant: #99cc99;
+    --code-symbol: #f92672;
+    --code-number: #ff73fd;
+    --code-string: #a8ff60;
+    --code-variable: #c6c5fe;
+    --code-generator: #ededed;
+    --code-help: #ffffb6;
+    --code-url: #96cbfe;
+    --code-language: #87c38a;
+    --code-attrule: #f9ee98;
+    --code-function: #dad085;
+    --code-regex: #e9c062;
+    --code-important: #fd971f;
+}
+code[class*='language-'],
+pre[class*='language-'] {
+    color: #c5c8c6;
+    font-family: Inconsolata, Monaco, Consolas, 'Courier New', Courier, monospace;
+    text-shadow: 0 1px rgba(0, 0, 0, 0.3);
+    font-size: 1em;
+    direction: ltr;
+    text-align: left;
+    white-space: pre;
+    word-spacing: normal;
+    word-wrap: normal;
+    word-break: normal;
+    line-height: 1.5;
+    -moz-tab-size: 4;
+    -o-tab-size: 4;
+    tab-size: 4;
+    -webkit-hyphens: none;
+    -moz-hyphens: none;
+    -ms-hyphens: none;
+    hyphens: none;
+}
+code[class*='language-'] ::-moz-selection,
+code[class*='language-']::-moz-selection,
+pre[class*='language-'] ::-moz-selection,
+pre[class*='language-']::-moz-selection {
+    text-shadow: none;
+    background: var(--code-selection-bg);
+}
+code[class*='language-'] ::selection,
+code[class*='language-']::selection,
+pre[class*='language-'] ::selection,
+pre[class*='language-']::selection {
+    text-shadow: none;
+    background: var(--code-selection-bg);
+}
+/* Code blocks */
+pre[class*='language-'] {
+    /* padding: 1em; */
+    /* margin: 0.5em 0; */
+    overflow: auto;
+    border-radius: 0.3em;
+}
+
+:not(pre) > code[class*='language-'],
+pre[class*='language-'] {
+    background: var(--code-bg);
+}
+
+/* Inline code */
+:not(pre) > code[class*='language-'] {
+    padding: 0.1em;
+    border-radius: 0.3em;
+}
+
+.token.comment,
+.token.prolog,
+.token.doctype,
+.token.cdata {
+    color: var(--code-comment);
+}
+
+.token.punctuation {
+    color: var(--code-punctuation);
+}
+
+.namespace {
+    opacity: 0.7;
+}
+
+.token.property,
+.token.keyword,
+.token.tag {
+    color: var(--code-key);
+}
+
+.token.class-name {
+    color: var(--code-classname);
+    text-decoration: underline;
+}
+
+.token.boolean,
+.token.constant {
+    color: var(--code-constant);
+}
+
+.token.symbol,
+.token.deleted {
+    color: var(--code-symbol);
+}
+
+.token.number {
+    color: var(--code-number);
+}
+
+.token.selector,
+.token.attr-name,
+.token.string,
+.token.char,
+.token.builtin,
+.token.inserted {
+    color: var(--code-string);
+}
+
+.token.variable {
+    color: var(--code-variable);
+}
+
+.token.operator {
+    color: var(--code-generator);
+}
+
+.token.entity {
+    color: var(--code-help);
+    cursor: help;
+}
+
+.token.url {
+    color: var(--code-url);
+}
+
+.language-css .token.string,
+.style .token.string {
+    color: var(--code-language);
+}
+
+.token.atrule,
+.token.attr-value {
+    color: var(--code-attrule);
+}
+
+.token.function {
+    color: var(--code-function);
+}
+
+.token.regex {
+    color: var(--code-regex);
+}
+
+.token.important {
+    color: var(--code-important);
+}
+
+.token.important,
+.token.bold {
+    font-weight: bold;
+}
+
+.token.italic {
+    font-style: italic;
+}
+div.code-toolbar {
+    position: relative;
+}
+div.code-toolbar > .toolbar {
+    position: absolute;
+    z-index: 10;
+    top: 0.3em;
+    right: 0.2em;
+}
+
+div.code-toolbar > .toolbar > .toolbar-item > span {
+    color: var(--code-language);
+    font-size: 0.8em;
+    padding: 0 0.5em;
+}
