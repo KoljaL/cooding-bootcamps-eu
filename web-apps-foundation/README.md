@@ -2,6 +2,10 @@
 
 Tasks and slides for each module of web apps foundation.
 
+## My solutions
+
+https://htmlpreview.github.io/?https://github.com/KoljaL/cooding-bootcamps-eu/blob/master/web-apps-foundation/index.html
+
 ## 1 - Web App Basics
 
 - [Tasks](/web-app-basics)
