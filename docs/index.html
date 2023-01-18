@@ -11,7 +11,14 @@
     var dataTheme = window.matchMedia('(prefers-color-scheme: dark)').matches ? 'dark' : 'light'
     document.documentElement.setAttribute('data-theme', dataTheme)
   </script>
+  <script src="https://cdn.jsdelivr.net/npm/marked/marked.min.js"></script>
+
   <link rel="stylesheet" href="./css/almostclassless.css">
+  <style>
+    * {
+      transition: color 0.5s, background-color 0.5s;
+    }
+  </style>
 </head>
 
 <body>
@@ -20,48 +27,111 @@
 
   <h2>Light Switch</h2>
 
-  <button class="toggleLight">
+  <p>
+    Your browser is currently in <span class="theme"></span>.
+  </p>
+  <button class="toggleTheme">
     to Light
   </button>
 
 
+  <div class="tip" markdown="1">Have **fun!**</div>
+
+  <div class="warning" markdown="1">Don't forget to **drink your water**.</div>
+
+
+  <div id="content"></div>
+
+
+  <div class="markdown">
+
+    ## Markdown
+
+
+
+    4 spaces or a tab indents a code block.
+
+
+
+    ```javascript
+    var dataTheme = window.matchMedia('(prefers-color-scheme: dark)').matches ? 'dark' : 'light'
+    document.documentElement.setAttribute('data-theme', dataTheme)
+    ```
+
+  </div>
 
   <script>
+    // define variables for the elements we need to manipulate
     const faviconEl = document.querySelector('link[rel="icon"]');
     const title = document.querySelector('title');
-    const toggleLightButton = document.querySelector('button.toggleLight');
+    const toggleThemeButton = document.querySelector('button.toggleTheme');
+    const themeName = document.querySelector('span.theme');
 
-    toggleLightButton.addEventListener('click', () => {
+    // define eventListener  
+    toggleThemeButton.addEventListener('click', () => {
+      // toggle dataTheme and set the theme
       dataTheme = (dataTheme === 'light') ? 'dark' : 'light'
-      toggleLight()
+      setTheme()
 
     });
 
-    toggleLight()
+    // run the functions on page load
+    document.addEventListener('DOMContentLoaded', () => {
+      setTheme()
+    });
 
 
 
 
-    function toggleLight() {
-      console.log(dataTheme)
-
-      if (dataTheme === 'light') {
-        toggleLightButton.innerText = 'Switch to Light';
-        dataTheme = 'dark';
+    //
+    // Set the theme based on the data-theme attribute
+    //
+    function setTheme() {
+      if (dataTheme === 'dark') {
+        themeName.innerHTML = '<b>dark</b> mode';
+        toggleThemeButton.innerText = 'Switch to Light';
         title.innerText = 'Dark Mode';
         faviconEl.setAttribute('href', 'img/favicon-dark.png');
       } else {
-        toggleLightButton.innerText = 'Switch to Dark';
-        dataTheme = 'light';
+        themeName.innerHTML = '<b>light</b> mode, or no mode is set';
+        toggleThemeButton.innerText = 'Switch to Dark';
         title.innerText = 'Light Mode';
         faviconEl.setAttribute('href', 'img/favicon-light.png');
       }
-
       document.documentElement.setAttribute('data-theme', dataTheme);
     }
 
 
   </script>
+
+  <script type="module">
+
+    marked.setOptions({
+      renderer: new marked.Renderer(),
+      highlight: function (code, lang) {
+        const hljs = require('highlight.js');
+        const language = hljs.getLanguage(lang) ? lang : 'plaintext';
+        return hljs.highlight(code, {language}).value;
+      },
+      langPrefix: 'hljs language-', // highlight.js css expects a top-level 'hljs' class.
+      pedantic: false,
+      gfm: true,
+      breaks: true,
+      sanitize: false,
+      smartypants: false,
+      xhtml: false
+    });
+
+
+    document.getElementById('content').innerHTML =
+      marked.parse('# Marked in the browser\n\nRendered by **marked**.');
+
+    document.querySelectorAll('.markdown').forEach((block) => {
+      block.innerHTML = marked.parse(block.innerText);
+    });
+  </script>
+
+
 </body>
 
 </html>
