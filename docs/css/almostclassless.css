@@ -686,7 +686,8 @@ cite {
 }
 
 code {
-    background: var(--secondary-darker);
+    /* // TODO use emphasis instead of dark  */
+    /* background: var(--secondary-darker); */
     border-radius: 3px;
     color: var(--secondary);
     display: inline-block;
@@ -879,7 +880,8 @@ ins {
 }
 
 kbd {
-    background-color: var(--secondary-darker);
+    /* // TODO use emphasis instead of dark  */
+    /* background-color: var(--secondary-darker); */
     border-radius: 3px;
     border: 1px solid var(--secondary-light);
     color: var(--secondary);
