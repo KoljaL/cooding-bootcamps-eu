@@ -9,7 +9,7 @@
   <script>
     document.documentElement.setAttribute('data-theme', window.matchMedia('(prefers-color-scheme: dark)').matches ? 'dark' : 'light')
   </script>
-  <title>toggle Password</title>
+  <title>Web App Basic</title>
   <script>
 
   </script>
@@ -88,10 +88,24 @@
     }
 
     footer {
-      position: fixed;
+      position: sticky;
       bottom: 0;
-      width: max-content;
+      /* width: max-content; */
+      background: var(--secondary-bg);
+      padding-top: 1rem;
+      padding-bottom: .25rem;
     }
+
+
+    .passwordToggle form {
+      display: grid;
+      grid-template-columns: 250px 100px;
+      grid-template-areas:
+        "password password"
+        "toggle toggle";
+      gap: .5rem;
+    }
+
 
     .fastcheapgood form {
       display: grid;
@@ -139,10 +153,15 @@
       transform: translateX(-50%) translateY(-50%);
     }
 
+    .randomColor,
     .counterReset {
       position: absolute;
       top: 0;
       right: 0;
+    }
+
+    .colorSlider {
+      position: relative;
     }
 
     .colorPreview {
@@ -154,6 +173,7 @@
       justify-content: center;
       align-items: center;
       transition: none;
+      margin-bottom: 2rem;
     }
 
     .colorSlider form {
@@ -163,6 +183,24 @@
       align-items: center;
       padding-inline: 1.5rem;
       gap: 1rem;
+      position: relative;
+    }
+
+    .colorSlider form>div {
+      display: flex;
+      flex-direction: column;
+      justify-content: start;
+      align-items: center;
+      gap: 1rem;
+      position: relative;
+    }
+
+    .colorSlider form>div>span {
+      position: absolute;
+      left: 0;
+      bottom: 2.5rem;
+      width: 30px;
+      text-align: center;
     }
 
     .colorName {
@@ -230,6 +268,10 @@
       background: hsl(0, 100%, 40%);
     }
 
+    input[type=range].red:after {
+      content: 'xx';
+    }
+
     input[type=range].green {
       background: hsl(120, 100%, 25%);
     }
@@ -288,11 +330,28 @@
       left: calc(50% - 3px);
     }
 
-    #runfast+label {
+    .digitalClock {
+      font-size: 3rem;
+      font-weight: 600;
       color: var(--primary);
+      transform: translateX(125px) translateY(80px);
+    }
+
+    #runfastButton {
+      appearance: button;
+      background-color: var(--primary);
+      border: 1px solid transparent;
+      border-radius: var(--border-radius-large);
+      color: var(--primary-bg);
       cursor: pointer;
-      font-size: 1.5rem;
+      font-size: 1rem;
+      padding: .75rem .75rem .65rem .75rem;
       position: relative;
+    }
+
+    #runfastButton:hover {
+      background-color: var(--primary-light);
+      border: 1px solid transparent;
     }
 
     #runfast:checked+label:after {
@@ -320,7 +379,7 @@
   </header>
 
 
-  <section>
+  <section class="passwordToggle">
     <h2>Password toggle</h2>
     <form>
       <label for="password">Password</label>
@@ -353,14 +412,26 @@
 
   <section class="colorSlider">
     <h2>Color Slider</h2>
-    <form autocomplete="off">
-      <input type="range" min="0" max="255" value="30" class="red">
-      <input type="range" min="0" max="255" value="144" class="green">
-      <input type="range" min="0" max="255" value="255" class="blue">
-    </form>
+    <button class="randomColor">random</button>
     <div class="colorPreview">
       <span class="colorName">#000000</span>
     </div>
+    <br>
+    <form autocomplete="off">
+      <div>
+        <span class="redValue">186</span>
+        <input type="range" min="0" max="255" value="186" class="red">
+      </div>
+      <div>
+        <span class="greenValue">218</span>
+        <input type="range" min="0" max="255" value="218" class="green">
+      </div>
+      <div>
+        <span class="blueValue">85</span>
+        <input type="range" min="0" max="255" value="85" class="blue">
+      </div>
+
+    </form>
   </section>
 
 
@@ -371,11 +442,14 @@
       <div class="minute"></div>
       <div class="second"></div>
       <div class="centerdot"></div>
+      <div class="digitalClock">
+        <span class="digitalClockHour">00</span> :
+        <span class="digitalClockMinute">00</span> :
+        <span class="digitalClockSecond">00</span>
+      </div>
     </div>
-
     <input type="checkbox" id="runfast" style="display:none" autocomplete="off">
-    <label for="runfast">runfast</label>
-
+    <label id=runfastButton for="runfast">runfast</label>
   </section>
 
 
@@ -399,6 +473,10 @@
     const clockHour = document.querySelector('.hour');
     const clockMinute = document.querySelector('.minute');
     const clockSecond = document.querySelector('.second');
+    const digitalClock = document.querySelector('.digitalClock');
+    const digitalClockHour = document.querySelector('.digitalClockHour');
+    const digitalClockMinute = document.querySelector('.digitalClockMinute');
+    const digitalClockSecond = document.querySelector('.digitalClockSecond');
     const runfast = document.querySelector('#runfast');
 
     runfast.addEventListener('change', function () {
@@ -424,12 +502,15 @@
     function clockFunction() {
       const now = getDate();
       const seconds = now.getSeconds();
+      digitalClockSecond.textContent = seconds < 10 ? `0${seconds}` : seconds;
       const secondsDegrees = ((seconds / 60) * 360) + 90;
       clockSecond.style.transform = `rotate(${secondsDegrees}deg) translateX(-120px)`;
       const minutes = now.getMinutes();
+      digitalClockMinute.textContent = minutes < 10 ? `0${minutes}` : minutes;
       const minutesDegrees = ((minutes / 60) * 360) + 90;
       clockMinute.style.transform = `rotate(${minutesDegrees}deg) translateX(-110px)`;
       const hours = now.getHours();
+      digitalClockHour.textContent = hours < 10 ? `0${hours}` : hours;
       const hoursDegrees = ((hours / 12) * 360) + 90;
       clockHour.style.transform = `rotate(${hoursDegrees}deg) translateX(-100px)`;
     }
@@ -440,13 +521,8 @@
       clockHour.style.display = 'block';
       clockMinute.style.display = 'block';
       clockSecond.style.display = 'block';
+      digitalClock.style.display = 'block';
     }, 1000);
-
-
-    // setInterval(function () {
-    //   var li = new Date().toString();
-    //   console.log(li)
-    // }, 1000);
 
 
 
@@ -585,24 +661,40 @@
     const red = document.querySelector('input.red');
     const green = document.querySelector('input.green');
     const blue = document.querySelector('input.blue');
+    const redValue = document.querySelector('.redValue');
+    const greenValue = document.querySelector('.greenValue');
+    const blueValue = document.querySelector('.blueValue');
+    const randomColorButton = document.querySelector('.randomColor');
     const colorName = document.querySelector('.colorName');
-    // define preview div
     const colorPreview = document.querySelector('.colorPreview');
+    const rgbArray = [[176, 0, 181], [186, 218, 85], [255, 187, 17], [112, 112, 32], [29, 16, 117], [32, 128, 117], [250, 122, 85], [204, 85, 85], [30, 42, 45], [102, 0, 221], [170, 204, 238], [90, 23, 237], [89, 162, 122], [34, 51, 221], [240, 11, 66], [76, 195, 85], [145, 42, 126], [145, 85, 61], [202, 34, 7], [92, 161, 229], [34, 238, 221], [195, 23, 28], [116, 119, 0], [171, 172, 171], [102, 51, 153], [222, 30, 126], [250, 17, 61]];
     // add eventListener
     red.addEventListener('input', setColor);
     green.addEventListener('input', setColor);
     blue.addEventListener('input', setColor);
+    randomColorButton.addEventListener('click', () => {
+      randomColor();
+      setColor();
+    });
+
+
     // run on startup
+    randomColor()
     setColor()
 
     //
     // set color
     //
     function setColor() {
-      // console.log(`${red.value}, ${green.value}, ${blue.value}`)
       colorPreview.style.background = `rgb(${red.value}, ${green.value}, ${blue.value})`;
       colorName.textContent = rgbToHex(red.value, green.value, blue.value);
       colorName.style.color = `rgb(${255 - red.value}, ${255 - green.value}, ${255 - blue.value})`;
+      redValue.textContent = red.value;
+      redValue.style.left = `${red.value / 255 * 224 - 5}px`;
+      greenValue.textContent = green.value;
+      greenValue.style.left = `${green.value / 255 * 224 - 5}px`;
+      blueValue.textContent = blue.value;
+      blueValue.style.left = `${blue.value / 255 * 224 - 5}px`;
     }
 
     //
@@ -616,7 +708,16 @@
       return hex(r, g, b)
     }
 
-
+    //
+    // set random color 
+    //
+    function randomColor() {
+      let idx = Math.floor(Math.random() * rgbArray.length);
+      red.value = rgbArray[idx][0];
+      green.value = rgbArray[idx][1];
+      blue.value = rgbArray[idx][2];
+      console.log(`${red.value}, ${green.value}, ${blue.value}`)
+    }
   </script>
 
 

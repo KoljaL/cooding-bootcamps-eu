@@ -5,8 +5,11 @@
 /** Project: https://github.com/KoljaL/AlmostClassless     **/
 /************************************************************/
 
-/* @media (prefers-color-scheme: light) {} */
-/* hsl(268, 75%, 44%); */
+/* 
+    neomorphism: https://insolitum.github.io/
+    range slider: http://danielstern.ca/range.css 
+    
+ */
 :root,
 :root[data-theme='light'] {
     /* Colors */
@@ -97,7 +100,9 @@
     --line-height: 1.75rem;
     --heading-margin: 1.5rem 0 1rem;
     /* Inputs */
-    --border-radius: 2px;
+    --border-radius-large: 0.5rem;
+    --border-radius-medium: 0.25rem;
+    --border-radius-small: 0.1rem;
     /* Calculated colors */
     --primary: hsl(var(--primaryH), var(--primaryS), var(--primaryL));
     --primary-bright: hsl(var(--primaryH), calc(var(--primaryS) * 1.25), 90%);
@@ -291,7 +296,7 @@ option,
 textarea,
 select {
     border: 1px solid var(--secondary-light);
-    border-radius: var(--border-radius);
+    border-radius: var(--border-radius-large);
     box-sizing: border-box;
     color: inherit;
     background-color: inherit;
@@ -415,7 +420,7 @@ input[type='submit'] {
     appearance: button;
     background-color: var(--primary);
     border: 1px solid transparent;
-    border-radius: var(--border-radius);
+    border-radius: var(--border-radius-large);
     box-sizing: border-box;
     color: var(--primary-bg);
     cursor: pointer;
@@ -502,7 +507,7 @@ input[type='checkbox'] {
 }
 input[type='radio'][type='checkbox'],
 input[type='checkbox'][type='checkbox'] {
-    border-radius: var(--border-radius);
+    border-radius: var(--border-radius-small);
 }
 input[type='radio']:checked,
 input[type='checkbox']:checked {
@@ -708,7 +713,7 @@ del {
 
 dialog {
     border: 1px solid var(--secondary-light);
-    border-radius: var(--border-radius);
+    border-radius: var(--border-radius-large);
     display: none;
     left: 50%;
     margin: 0;
@@ -740,7 +745,7 @@ dialog::before {
 dialog::after {
     content: '';
     background: var(--primary-bg);
-    border-radius: var(--border-radius);
+    border-radius: var(--border-radius-large);
     height: 100%;
     left: 0;
     position: absolute;
@@ -759,7 +764,7 @@ dialog > h4,
 dialog > h5,
 dialog > h6 {
     border-bottom: 1px solid var(--secondary-light);
-    border-radius: var(--border-radius) var(--border-radius) 0 0;
+    border-radius: var(--border-radius-large) var(--border-radius-large) 0 0;
     color: var(--secondary);
     font-size: 1.125rem;
     margin: -1rem -1rem 1rem -1rem;
@@ -783,12 +788,12 @@ details + details {
     border-radius: 0;
 }
 details:first-of-type {
-    border-top-left-radius: var(--border-radius);
-    border-top-right-radius: var(--border-radius);
+    border-top-left-radius: var(--border-radius-large);
+    border-top-right-radius: var(--border-radius-large);
 }
 details:last-of-type {
-    border-bottom-left-radius: var(--border-radius);
-    border-bottom-right-radius: var(--border-radius);
+    border-bottom-left-radius: var(--border-radius-large);
+    border-bottom-right-radius: var(--border-radius-large);
 }
 
 dfn {
@@ -814,7 +819,7 @@ dd {
 
 fieldset {
     border: 1px solid var(--secondary-light);
-    border-radius: var(--border-radius);
+    border-radius: var(--border-radius-large);
     margin: 1rem 0;
     padding: 1rem;
 }
@@ -825,7 +830,7 @@ fieldset > :last-child {
 legend {
     /* background: var(--secondary-lighter); */
     /* border: 1px solid var(--secondary-light); */
-    /* border-radius: var(--border-radius); */
+    /* border-radius: var(--border-radius-large); */
     /* padding: 0.25rem 0.5rem; */
     padding-inline: 0.5rem;
     font-weight: var(--font-weight-bold);
@@ -835,7 +840,7 @@ legend {
 figure {
     background: var(--secondary-lighter);
     border: 1px solid var(--secondary-light);
-    border-radius: var(--border-radius);
+    border-radius: var(--border-radius-large);
     display: block;
     margin: 1rem 0;
     padding: 1rem;
