@@ -124,6 +124,8 @@
       border: 3px solid var(--primary);
       border-radius: 1rem;
       position: relative;
+      cursor: pointer;
+
     }
 
     .counterBackgroundWidth {
@@ -151,6 +153,12 @@
       top: 50%;
       left: 50%;
       transform: translateX(-50%) translateY(-50%);
+      -webkit-user-select: none;
+      /* Safari */
+      -ms-user-select: none;
+      /* IE 10 and IE 11 */
+      user-select: none;
+      /* Standard syntax */
     }
 
     .randomColor,
@@ -405,7 +413,7 @@
     <h2>Counter</h2>
     <button class="counterReset">reset</button>
     <div class="counterBackground">
-      <div class="counterValue">0</div>
+      <div class="counterValue">click here</div>
       <div class="counterBackgroundWidth"></div>
     </div>
   </section>
@@ -582,8 +590,8 @@
     const resetButton = document.querySelector('.counterReset');
     const counterValue = document.querySelector('.counterValue');
     var counter = 0;
-    counterValue.textContent = counter;
-    counterBackgroundWidth.style.width = counter + '%';
+    // counterValue.textContent = counter;
+    // counterBackgroundWidth.style.width = counter + '%';
 
     // add eventListener
     counterBackground.addEventListener('click', incrementCounter);
@@ -621,8 +629,6 @@
         }
         counter++;
       }
-
-
       counterValue.textContent = counter;
       counterBackground.style.borderColor = 'var(--primary-dark)';
       setTimeout(() => {
@@ -649,6 +655,9 @@
       }, inervallTime);
     }
 
+    //
+    // set background color & width for counter progress
+    //
     function setBackgrounWidth() {
       counterBackgroundWidth.style.width = counter + '%';
       counterBackgroundWidth.style.background = `hsl(${100 - counter}, 100%, 50%)`
