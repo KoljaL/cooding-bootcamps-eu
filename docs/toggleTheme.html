@@ -241,7 +241,7 @@
     <thead>
       <tr>
         <th>Setting</th>
-        <th>Value</th>
+        <th style="width:70px">Value</th>
       </tr>
     </thead>
     <tr>
@@ -294,8 +294,9 @@
         <input type="checkbox" id="saveLocalStorage" name="saveLocalStorage" value="saveLocalStorage">
       </td>
       <td>
-        click the checkbox and <button onclick="reload()">reload</button> the page, to save the <code>data-theme</code> property in <code>localStorage</code><br>
-        <small>the checkbox is checked if the <code>data-theme</code> property is saved in <code>localStorage</code><br>to remove the <code>data-theme</code> property from <code>localStorage</code> uncheck the checkbox and reload the page again</small>
+        click the checkbox to save the <code>data-theme</code> property in <code>localStorage</code><br>
+        and <button onclick="reload()">reload</button> the page, to see the effect<br>
+        <!-- <small>the checkbox is checked if the <code>data-theme</code> property is saved in <code>localStorage</code><br>to remove the <code>data-theme</code> property from <code>localStorage</code> uncheck the checkbox and reload the page again</small> -->
       </td>
     </tr>
     </tr>
@@ -320,6 +321,7 @@
     const settingBrowser = document.querySelector('.settingBrowser');
     const settingIndividual = document.querySelector('.settingIndividual');
     const settingSaved = document.querySelector('.settingSaved');
+    const saveLocalStorage = document.querySelector('#saveLocalStorage');
 
 
     var dataTheme = document.documentElement.getAttribute('data-theme', dataTheme)
@@ -334,8 +336,17 @@
       // store localStorage
       // set the theme
       dataTheme = (dataTheme === 'light') ? 'dark' : 'light'
-      storeLocal()
+      // storeLocal()
       setTheme()
+      setTableValues()
+    });
+
+
+    //
+    // define eventlistner for the saveLocalStorage checkbox
+    //
+    saveLocalStorage.addEventListener('change', () => {
+      storeLocal()
       setTableValues()
     });
 
