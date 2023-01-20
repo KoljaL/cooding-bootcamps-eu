@@ -66,6 +66,14 @@
       margin: .5rem 0 0;
     }
 
+    header .icons {
+      display: flex;
+      flex-direction: row;
+      justify-content: space-between;
+      align-items: center;
+      gap: 1rem;
+    }
+
     h2 {
       margin-top: 6rem;
     }
@@ -74,7 +82,7 @@
       width: 2.5rem;
       height: 2.5rem;
       position: relative;
-      top: .5rem;
+      /* top: .5rem; */
       filter: hue-rotate(var(--primaryHI)) saturate(40%) brightness(120%);
       transition: all var(--theme-toggle__classic--duration) ease;
     }
@@ -130,7 +138,6 @@
       border-radius: 1rem;
       position: relative;
       cursor: pointer;
-
     }
 
     .counterBackgroundWidth {
@@ -400,6 +407,57 @@
       padding-top: 1rem;
       margin: 0;
     }
+
+    .menu {
+      position: absolute;
+      top: 4rem;
+      right: 4rem;
+      padding: .5rem;
+      padding-inline: .5rem;
+      margin: 0;
+      z-index: 10;
+      /* background: var(--secondary-bg); */
+      background: radial-gradient(var(--secondary-bg), var(--secondary-bg1));
+
+      border: 1px solid var(--primary-darker);
+      border-radius: var(--border-radius-large);
+      display: none;
+    }
+
+    .menu ul {
+      margin-bottom: 0rem;
+      padding-left: .5rem;
+      font-variant: small-caps;
+    }
+
+    .menu li {
+      list-style: none;
+      font-size: 1.2rem;
+      padding: .5rem;
+    }
+
+    .menu a {
+      white-space: nowrap;
+      font-variant: normal;
+      font-size: 1.2rem;
+
+    }
+
+    .menuWrapper::before {
+      content: " ";
+      background-image: url("data:image/svg+xml;utf8,<svg xmlns='http://www.w3.org/2000/svg' fill='none' viewBox='0 0 24 24' stroke-width='1.5' stroke='red'><path stroke-linecap='round' stroke-linejoin='round' d='M12 21a9.004 9.004 0 008.716-6.747M12 21a9.004 9.004 0 01-8.716-6.747M12 21c2.485 0 4.5-4.03 4.5-9S14.485 3 12 3m0 18c-2.485 0-4.5-4.03-4.5-9S9.515 3 12 3m0 0a8.997 8.997 0 017.843 4.582M12 3a8.997 8.997 0 00-7.843 4.582m15.686 0A11.953 11.953 0 0112 10.5c-2.998 0-5.74-1.1-7.843-2.918m15.686 0A8.959 8.959 0 0121 12c0 .778-.099 1.533-.284 2.253m0 0A17.919 17.919 0 0112 16.5c-3.162 0-6.133-.815-8.716-2.247m0 0A9.015 9.015 0 013 12c0-1.605.42-3.113 1.157-4.418' /></svg>");
+      background-size: cover;
+      background-repeat: no-repeat;
+      width: 2rem;
+      height: 2rem;
+      display: inline-block;
+      filter: hue-rotate(var(--primaryHI)) saturate(40%) brightness(120%);
+      position: relative;
+    }
+
+    .menuWrapper:hover .menu {
+      display: block;
+    }
   </style>
 </head>
 
@@ -408,6 +466,9 @@
   <header>
     <h1>Web Apps Foundation</h1>
     <span class="icons">
+      <div class="menuWrapper">
+        <ul class="menu"></ul>
+      </div>
       <label class="theme-toggle" title="Toggle theme"></label>
     </span>
   </header>
@@ -820,9 +881,7 @@
     //   console.log(`${red.value}, ${green.value}, ${blue.value}`)
     // }
   </script>
-
-
-
+  <script src="./js/menu.js"></script>
 
 </body>
 
