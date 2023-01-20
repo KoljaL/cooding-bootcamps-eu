@@ -20,6 +20,18 @@
   <link rel="stylesheet" href="./css/layout.css">
 
   <style>
+    @font-face {
+      font-family: Overpass-Light;
+      src: url('./font/Overpass-Light.woff2') format('woff2');
+    }
+
+    @font-face {
+      font-family: Overpass-Regular;
+      src: url('./font/Overpass-Medium.woff2') format('woff2');
+    }
+
+
+
     :root,
     [data-theme='light'] {
       --background-color: hsl(0, 0%, 90%);
@@ -47,6 +59,7 @@
 
 
     body {
+      font-family: 'Overpass-Light', sans-serif;
       background-color: var(--background-color);
       color: var(--text-color);
     }

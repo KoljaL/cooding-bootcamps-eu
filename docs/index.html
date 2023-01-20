@@ -1,0 +1,261 @@
+<!DOCTYPE html>
+<html lang="en" data-theme="dark">
+
+<head>
+  <meta charset="UTF-8">
+  <meta http-equiv="X-UA-Compatible" content="IE=edge">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <link href="img/favicon-dark.png" rel="icon" />
+  <title>Web App Basic</title>
+  <script>
+    document.documentElement.setAttribute('data-theme', window.matchMedia('(prefers-color-scheme: dark)').matches ? 'dark' : 'light')
+  </script>
+  <link rel="stylesheet" href="./css/almostclassless.css">
+  <link rel="stylesheet" href="./css/layout.css">
+
+  <style>
+    :root {
+      --page-bg: hsl(210, 4%, 20%);
+      --page-bg1: hsl(210, 4%, 23%);
+      --card-bg-1: rgba(115, 115, 115, 0.15);
+      --card-bg-2: hsl(210, 4%, 18%);
+    }
+
+    html {
+      background: var(--page-bg);
+    }
+
+    body {
+      background: var(--page-bg);
+    }
+
+    header {
+      background: var(--page-bg) !important;
+      margin: 0;
+      border: none;
+      top: -40px;
+      height: 6rem;
+      position: fixed;
+      width: calc(var(--body-width) - 2rem);
+      margin-bottom: 2rem;
+    }
+
+    footer {
+      background: var(--page-bg) !important;
+      margin: 0;
+      border: none;
+      bottom: -40px;
+      height: 6rem;
+      position: fixed;
+      width: calc(var(--body-width) - 2rem);
+    }
+
+    .card {
+      background: linear-gradient(145deg, var(--card-bg-1) 15%, var(--card-bg-2)80%);
+      border-radius: 2rem;
+      /* margin: 3rem 0; */
+      padding: 1rem 2rem;
+    }
+
+    .neumorphism-button {
+      background: linear-gradient(145deg, rgba(100, 100, 105, 0.15) 15%, rgba(33, 33, 33, 0.4) 80%);
+      box-shadow: -4px -3px 2px 0 rgba(250, 250, 250, 0.13), 4px 4px 2px 0 rgba(0, 0, 0, 0.4)
+    }
+
+    textarea,
+    input,
+    .neumorphism-card {
+      box-shadow: inset 2px 2px 4px #000, inset -2px -2px 4px #636363
+    }
+
+    textarea {
+      padding: .5rem;
+    }
+
+    .neumorphism-card-big {
+      box-shadow: 5px 5px 4px #161718, -5px -5px 4px #404346
+    }
+
+    section {
+      margin: 3rem 0;
+    }
+
+    h2 {
+      margin: 0;
+    }
+
+    input,
+    textarea {
+      border: 1px solid transparent !important;
+    }
+
+    .form form {
+      display: grid;
+      grid-template-columns: 80px 1fr;
+      grid-gap: 1rem;
+    }
+
+    button,
+    .form label {
+      background: var(--page-bg1);
+      /* background: linear-gradient(145deg, var(--card-bg-1) 15%, var(--card-bg-2)80%); */
+      box-shadow: 5px 5px 4px #161718, -5px -5px 4px #404346;
+      border-radius: .5rem;
+      height: 2rem;
+      padding: .5rem;
+    }
+
+    .list .aList {
+      box-shadow: 5px 5px 4px #161718, -5px -5px 4px #404346;
+      border-radius: .5rem;
+      padding: .5rem;
+      margin-top: 1.5rem;
+    }
+
+    .list .aList li {
+      box-shadow: inset 2px 2px 4px #000, inset -2px -2px 4px #636363;
+      border-radius: .5rem;
+      padding: .5rem;
+      margin-top: 1.5rem;
+      width: max-content;
+      list-style: none;
+    }
+
+    .notes li h3 {
+      box-shadow: 5px 5px 4px #161718, -5px -5px 4px #404346;
+      border-radius: .5rem;
+      padding: .5rem;
+      margin: .75rem;
+    }
+
+    .notes li {
+      box-shadow: 5px 5px 4px #161718, -5px -5px 4px #404346;
+      border-radius: .5rem;
+      padding-top: .1rem;
+      padding-bottom: .75rem;
+      padding-inline: 1rem;
+      margin-top: 1.5rem;
+      width: max-content;
+      list-style: none;
+    }
+
+    .notes li li {
+      box-shadow: inset 2px 2px 4px #000, inset -2px -2px 4px #636363;
+      border-radius: .5rem;
+      padding: .5rem;
+      margin-top: 1.5rem;
+      width: max-content;
+      list-style: none;
+      max-width: 100%;
+    }
+  </style>
+</head>
+
+<body>
+  <header class="card neumorphism-card-big">
+    <h1>Web Apps Foundation</h1>
+    <span class="icons">
+      <label class="theme-toggle" title="Toggle theme"></label>
+    </span>
+  </header>
+  <div class="spacer"></div>
+
+  <section class="card neumorphism-card-big">
+    <h2>Web App Basic</h2>
+    <p>
+      This is a basic web app with a menu and a toggle theme button.
+    </p>
+    <p>
+      The menu is a simple list of links. The toggle theme button is a label with a title and a background image.
+    </p>
+    <p>
+      The menu is hidden by default. It is shown when the menu button is clicked. The menu button is a label with a title and a background image.
+    </p>
+    <p>
+      The toggle theme button toggles between light and dark theme. The theme is stored in the local storage. The theme is set on page load.
+    </p>
+  </section>
+
+  <section class="form card neumorphism-card-big">
+    <h2>Form</h2>
+    <!-- an example form -->
+    <form>
+      <label for="name">Name</label>
+      <input type="text" name="name" id="name" placeholder="Your name" required>
+      <label for="email">Email</label>
+      <input type="email" name="email" id="email" placeholder="Your email" required>
+      <label for="message">Message</label>
+      <textarea name="message" id="message" placeholder="Your message" required></textarea>
+      <button type="submit">Send</button>
+  </section>
+
+
+  <section class="list card neumorphism-card-big">
+    <h2>Lists</h2>
+    <div class="aList">
+      <h3>Unordered List</h3>
+      <ul>
+        <li>Item 1</li>
+        <li>Item 2</li>
+        <li>Item 3</li>
+      </ul>
+    </div>
+    <div class="aList">
+      <h3>Ordered List</h3>
+      <ol>
+        <li>Item 1</li>
+        <li>Item 2</li>
+        <li>Item 3</li>
+      </ol>
+  </section>
+
+  <section class="notes card neumorphism-card-big">
+    <h2>Notes</h2>
+    <ul>
+      <li>
+        <h3>Monday</h3>
+        <ul>
+
+          <li>lorem ipsum dolor sit amet consectetur adipisicing elit. Quisquam, quod.</li>
+          <li>Feed the dog</li>
+          <li>consectetur adipisicing elit. Quisquam, quod. Lorem ipsum dolor sit amet consectetur adipisicing elit. the fish</li>
+        </ul>
+      </li>
+      <li>
+        <h3>Tuesday</h3>
+        <ul>
+          <li>Feed the consectetur adipisicing elit. Quisquam, quod. Lorem ipsum dolor sit amet consectetur adipisicing elit.</li>
+          <li>lorem ipsum dolor sit amet consectetur adipisicing elit. Quisquam, quod.</li>
+          <li>Feed Quisquam, quod. Lorem ipsum dolor sit amet consectetur adipisicing elit. fish</li>
+        </ul>
+      </li>
+      <li>
+        <h3>Wednesday</h3>
+        <ul>
+          <li>Quisquam, quod. Lorem ipsum dolor sit amet consectetur adipisicing elit. the cat</li>
+          <li>lorem ipsum dolor sit amet consectetur adipisicing elit. Quisquam, quod.</li>
+          <li>Feed Quisquam, quod. Lorem ipsum dolor sit amet consectetur adipisicing elit.</li>
+        </ul>
+      </li>
+    </ul>
+
+
+
+  </section>
+
+
+
+
+  <div class="spacer"></div>
+  <footer class="card neumorphism-card-big">
+    <p>
+      <a target="_blank" class="sourceCode" href="https://github.com/KoljaL/cooding-bootcamps-eu/blob/master/docs/webappbasic.html">Source Code on GitHub</a>
+    </p>
+  </footer>
+
+  <script src="./js/menu.js"></script>
+  <script src="./js/toggleTheme.js"></script>
+
+</body>
+
+</html>

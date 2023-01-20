@@ -16,6 +16,23 @@ const menu = [
                 desc: 'Some other basics',
                 link: 'https://github.com/KoljaL/cooding-bootcamps-eu/blob/master/docs/webappbasic.html',
             },
+            {
+                title: 'Notes',
+                path: './notes.html',
+                desc: 'A note taking app',
+                link: 'https://github.com/KoljaL/cooding-bootcamps-eu/blob/master/docs/notes.html',
+            },
+        ],
+    },
+    {
+        title: 'etc',
+        children: [
+            {
+                title: 'fade Modal in & out',
+                path: './fadeInModal.html',
+                desc: 'a demonstration, how to fade in and out a modal',
+                link: 'https://github.com/KoljaL/cooding-bootcamps-eu/blob/master/docs/fadeInModal.html',
+            },
         ],
     },
 ];
@@ -96,10 +113,6 @@ function generateMenu(menu) {
         menuEl.appendChild(ghli);
     }
 }
-
-// <div class="menuWrapper">
-// <ul class="menu"></ul>
-// </div>
 
 // CSS
 const styleMenu = document.createElement('style');

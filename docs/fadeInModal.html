@@ -1,0 +1,166 @@
+<!DOCTYPE html>
+<html lang="en" data-theme="dark">
+
+<head>
+  <meta charset="UTF-8">
+  <meta http-equiv="X-UA-Compatible" content="IE=edge">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <link href="img/favicon-dark.png" rel="icon" />
+  <title>Modal fade in and out</title>
+  <script>
+    document.documentElement.setAttribute('data-theme', window.matchMedia('(prefers-color-scheme: dark)').matches ? 'dark' : 'light')
+  </script>
+  <link rel="stylesheet" href="./css/almostclassless.css">
+  <link rel="stylesheet" href="./css/layout.css">
+  <style>
+    .modal {
+      display: none;
+      opacity: 0;
+      position: absolute;
+      z-index: 1;
+      left: 50%;
+      transform: translateX(-50%);
+      top: 200px;
+      width: 300px;
+      height: 100px;
+      margin-inline: auto;
+      overflow: auto;
+      transition: opacity 1.5s;
+      border: 1px solid black;
+      border-radius: 1rem;
+      background-color: rgb(142, 72, 165);
+    }
+
+    .modal.fadeIn {
+      animation: fadeIn ease-in-out 1s;
+      animation-fill-mode: forwards;
+    }
+
+    .modal.fadeOut {
+      animation: fadeOut ease-in-out 1s;
+      animation-fill-mode: forwards;
+    }
+
+    @keyframes fadeIn {
+      from {
+        opacity: 0;
+      }
+
+      to {
+        opacity: 1;
+      }
+
+    }
+
+    @keyframes fadeOut {
+      from {
+        opacity: 1;
+      }
+
+      to {
+        opacity: 0;
+      }
+    }
+
+    .close {
+      position: absolute;
+      right: .5rem;
+      top: 0;
+      color: #aaaaaa;
+      font-size: 28px;
+      font-weight: bold;
+      cursor: pointer;
+    }
+
+    .close:hover {
+      color: #000;
+      text-decoration: none;
+      cursor: pointer;
+    }
+
+    .modal h4 {
+      color: white;
+      text-align: center;
+      margin-top: 0;
+      line-height: 1.5;
+      background-color: hsl(285, 39%, 40%);
+    }
+
+    .modal .content {
+      color: white;
+      text-align: center;
+      margin-top: 0;
+      line-height: 1.5;
+      padding: 1rem;
+
+    }
+  </style>
+
+  <link rel="stylesheet" href="./css/almostclassless.css">
+  <link rel="stylesheet" href="./css/layout.css">
+  <style>
+
+
+  </style>
+</head>
+
+
+
+<header>
+  <h1>Web Apps Foundation</h1>
+  <span class="icons">
+
+    <label class="theme-toggle" title="Toggle theme"></label>
+  </span>
+</header>
+<section>
+  <h2>fade modal in and out</h2>
+
+
+  <button id="openModal">Open Modal</button>
+  <br>
+  <br>
+  Status: <span class=status>please klick the botton</span>
+
+
+  <div id="modal" class="modal">
+    <span class="close">&times;</span>
+    <h4>Modal Header</h4>
+    <div class="content">
+      <p>Some text in the Modal..</p>
+    </div>
+  </div>
+</section>
+
+<script>
+  var modal = document.querySelector("#modal");
+  var openBtn = document.querySelector("#openModal");
+  var statusText = document.querySelector(".status");
+  var closeBtn = document.querySelector(".close");
+
+  openBtn.onclick = function () {
+    modal.classList.add("fadeIn");
+    modal.style.display = "block";
+    statusText.innerHTML = "display:block & class .fadeIn";
+  };
+
+  closeBtn.onclick = function () {
+    modal.classList.remove("fadeIn");
+    modal.classList.add("fadeOut");
+    statusText.innerHTML = "removed class .fadeIn, new class fadeOut";
+
+    setTimeout(() => {
+      modal.style.display = "none";
+      modal.classList.remove("fadeOut");
+      statusText.innerHTML = "removed class .fadeout, display: none";
+    }, 1000);
+  };
+
+</script>
+
+<script src="./js/menu.js"></script>
+<script src="./js/toggleTheme.js"></script>
+
+</body>
+
+</html>
