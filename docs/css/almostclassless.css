@@ -22,6 +22,7 @@
     --secondaryS: 0%;
     --secondaryL: 13%;
     --secondary-bg: hsl(0, 0%, 100%);
+    --secondary-bg1: hsl(0, 0%, 90%);
     /* Status */
     --error: #d00;
     --warning: #ec0;
@@ -54,6 +55,7 @@
     --secondaryS: 0%;
     --secondaryL: 70%;
     --secondary-bg: hsl(215, 18%, 13%);
+    --secondary-bg1: hsl(215, 18%, 9%);
     /* Status */
     --error: #d00;
     --warning: #ec0;

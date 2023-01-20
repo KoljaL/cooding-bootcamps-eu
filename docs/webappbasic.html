@@ -229,6 +229,7 @@
       padding-inline: 1.5rem;
       gap: 1rem;
       position: relative;
+      flex-wrap: wrap;
     }
 
     .colorSlider form>div {
@@ -295,17 +296,17 @@
       border-radius: 3px;
       background: var(--primary);
       cursor: pointer;
-      margin-top: -14px;
+      /* margin-top: -14px; */
       box-shadow: 1px 1px 1px #000000, 0px 0px 1px #0d0d0d;
     }
 
     input[type=range]::-moz-range-thumb {
-      box-shadow: 1px 1px 1px #000000, 0px 0px 1px #0d0d0d;
       border: 2px solid var(--border-color);
       height: 36px;
       width: 16px;
       border-radius: 3px;
       background: var(--primary);
+      box-shadow: 1px 1px 1px #000000, 0px 0px 1px #0d0d0d;
       cursor: pointer;
     }
 
@@ -329,6 +330,14 @@
       border: 2px solid var(--primary);
       border-radius: 50%;
       position: relative;
+      background: radial-gradient(var(--secondary-bg), var(--secondary-bg1));
+    }
+
+    /* screen smaller then 500 px media query */
+    @media screen and (max-width: 500px) {
+      .clockBackground {
+        scale: 0.6;
+      }
     }
 
     .clockBackground>div {
