@@ -115,41 +115,9 @@
       font-size: 1.2rem;
     }
 
-    .fastcheapgood input[type="checkbox"],
     .fastcheapgood label {
       cursor: pointer;
     }
-
-    .fastcheapgood input[type="checkbox"] {
-      margin-top: -.3rem;
-    }
-
-    input[type="checkbox"] {
-      width: 2rem;
-      height: 1rem;
-      /* border-radius: var(--border-radius-large) !important; */
-      border-color: var(--secondary-darker) !important;
-      background: var(--secondary-bg);
-      box-shadow: inset .8rem 0 0 0rem var(--secondary-darker);
-      transition: box-shadow .2s ease-in-out;
-    }
-
-    input[type="checkbox"]:checked {
-      border-color: var(--primary);
-      transition: box-shadow .2s ease-in-out;
-      box-shadow: inset 1rem 0 0 0rem var(--secondary-bg), inset 0 0 1rem 0rem var(--primary);
-    }
-
-    input[type="checkbox"]:hover,
-    input[type="checkbox"]:focus {
-      border-color: var(--secondary-darker) !important;
-    }
-
-    input[type="checkbox"]:checked:focus,
-    input[type="checkbox"]:checked:hover {
-      border-color: var(--primary) !important;
-    }
-
 
     .counter {
       position: relative;
@@ -461,11 +429,11 @@
   <section class="fastcheapgood">
     <h2>fast cheap good</h2>
     <form autocomplete="off">
-      <input type="checkbox" id="fast" name="fast" value="fast">
+      <input type="checkbox" id="fast" class="slider">
       <label for="fast">Fast</label>
-      <input type="checkbox" id="cheap" name="cheap" value="cheap">
+      <input type="checkbox" id="cheap" class="slider">
       <label for="cheap">Cheap</label>
-      <input type="checkbox" id="good" name="good" value="good">
+      <input type="checkbox" id="good" class="slider">
       <label for="good">Good</label>
     </form>
     <p class="description">
