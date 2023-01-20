@@ -717,12 +717,60 @@
     // set random color 
     //
     function randomColor() {
+      let oldred = red.value;
+      let oldgreen = green.value;
+      let oldblue = blue.value;
       let idx = Math.floor(Math.random() * rgbArray.length);
-      red.value = rgbArray[idx][0];
-      green.value = rgbArray[idx][1];
-      blue.value = rgbArray[idx][2];
-      console.log(`${red.value}, ${green.value}, ${blue.value}`)
+      let newred = rgbArray[idx][0];
+      let newgreen = rgbArray[idx][1];
+      let newblue = rgbArray[idx][2];
+      const intervalTime = 5;
+
+      var counterBlue_1 = setInterval(() => {
+        if (oldblue < newblue) {
+          blue.value = oldblue++;
+          setColor();
+        } else if (oldblue > newblue) {
+          blue.value = oldblue--;
+          setColor();
+        } else {
+          clearInterval(counterBlue_1);
+        }
+      }, intervalTime);
+
+      var counterGreen_1 = setInterval(() => {
+        if (oldgreen < newgreen) {
+          green.value = oldgreen++;
+          setColor();
+        } else if (oldgreen > newgreen) {
+          green.value = oldgreen--;
+          setColor();
+        } else {
+          clearInterval(counterGreen_1);
+        }
+      }, intervalTime);
+
+      var counterRed_1 = setInterval(() => {
+        if (oldred < newred) {
+          red.value = oldred++;
+          setColor();
+        } else if (oldred > newred) {
+          red.value = oldred--;
+          setColor();
+        } else {
+          clearInterval(counterRed_1);
+        }
+      }, intervalTime);
+
+
     }
+    // function randomColor() {
+    //   let idx = Math.floor(Math.random() * rgbArray.length);
+    //   red.value = rgbArray[idx][0];
+    //   green.value = rgbArray[idx][1];
+    //   blue.value = rgbArray[idx][2];
+    //   console.log(`${red.value}, ${green.value}, ${blue.value}`)
+    // }
   </script>
 
 
