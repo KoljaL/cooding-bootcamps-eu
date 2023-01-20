@@ -109,8 +109,45 @@
 
     .fastcheapgood form {
       display: grid;
-      grid-template-columns: 1rem 1fr;
+      grid-template-columns: 2rem 1fr;
       gap: 1rem;
+      align-items: center;
+      font-size: 1.2rem;
+    }
+
+    .fastcheapgood input[type="checkbox"],
+    .fastcheapgood label {
+      cursor: pointer;
+    }
+
+    .fastcheapgood input[type="checkbox"] {
+      margin-top: -.3rem;
+    }
+
+    input[type="checkbox"] {
+      width: 2rem;
+      height: 1rem;
+      /* border-radius: var(--border-radius-large) !important; */
+      border-color: var(--secondary-darker) !important;
+      background: var(--secondary-bg);
+      box-shadow: inset .8rem 0 0 0rem var(--secondary-darker);
+      transition: box-shadow .2s ease-in-out;
+    }
+
+    input[type="checkbox"]:checked {
+      border-color: var(--primary);
+      transition: box-shadow .2s ease-in-out;
+      box-shadow: inset 1rem 0 0 0rem var(--secondary-bg), inset 0 0 1rem 0rem var(--primary);
+    }
+
+    input[type="checkbox"]:hover,
+    input[type="checkbox"]:focus {
+      border-color: var(--secondary-darker) !important;
+    }
+
+    input[type="checkbox"]:checked:focus,
+    input[type="checkbox"]:checked:hover {
+      border-color: var(--primary) !important;
     }
 
 
