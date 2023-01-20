@@ -134,7 +134,7 @@ styleMenu.innerHTML = /*CSS*/ `
 }
 
 .menu {
-  // display: none;
+  display: none;
   position: absolute;
   top: 1rem;
   left: 1rem;
@@ -206,7 +206,6 @@ styleMenu.innerHTML = /*CSS*/ `
   padding-inline: .5rem;
   white-space: nowrap;
   color:#ccc;
-  // filter:brightness(120%);
   background: var(--primary-dark,var(--link-color));
 }
 
