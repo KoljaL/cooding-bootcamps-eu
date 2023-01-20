@@ -17,17 +17,9 @@
   </script>
 
   <!-- <link rel="stylesheet" href="./css/almostclassless.css"> -->
+  <link rel="stylesheet" href="./css/layout.css">
+
   <style>
-    @font-face {
-      font-family: Overpass-Light;
-      src: url('./font/Overpass-Light.woff2') format('woff2');
-    }
-
-    @font-face {
-      font-family: Overpass-Regular;
-      src: url('./font/Overpass-Medium.woff2') format('woff2');
-    }
-
     :root,
     [data-theme='light'] {
       --background-color: hsl(0, 0%, 90%);
@@ -50,51 +42,21 @@
     }
 
     * {
-      box-sizing: border-box;
-      -ms-overflow-style: none;
-      scrollbar-width: none;
       transition: color 0.5s, background-color 0.5s;
     }
 
-    ::-webkit-scrollbar {
-      display: none;
-    }
 
     body {
-      max-width: 1024px;
-      margin: 0 auto;
-      padding: 0 1rem;
-      font-family: Overpass-Light, sans-serif;
       background-color: var(--background-color);
       color: var(--text-color);
     }
 
     header {
-      position: sticky;
-      top: 0;
-      height: var(--header-height);
-      display: flex;
-      flex-direction: row;
-      justify-content: space-between;
-      align-items: baseline;
-      gap: 1rem;
-      padding-inline: 1rem;
       background-color: var(--background-color);
       border-bottom: 1px solid var(--border-color);
-      z-index: 5;
     }
 
-    header h1 {
-      margin: .5rem 0 0;
-    }
 
-    header .icons {
-      display: flex;
-      flex-direction: row;
-      justify-content: space-between;
-      align-items: flex-end;
-      gap: 1rem;
-    }
 
     h1,
     h2,

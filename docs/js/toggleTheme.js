@@ -45,7 +45,7 @@ style.innerHTML = /*CSS*/ `
   border: none;
   background: 0 0;
   cursor: pointer;
-  margin-right: .5rem;
+  height: 2rem;
 }
 
 .theme-toggle input[type="checkbox"] {

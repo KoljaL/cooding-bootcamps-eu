@@ -1,0 +1,105 @@
+/*
+ *
+ *
+ * Layout Styles for almost all pages 
+ *
+ *
+ */
+
+@font-face {
+    font-family: Overpass-Light;
+    src: url('../font/Overpass-Light.woff2') format('woff2');
+}
+
+@font-face {
+    font-family: Overpass-Regular;
+    src: url('../font/Overpass-Medium.woff2') format('woff2');
+}
+
+:root {
+    --body-width: 1024px;
+}
+
+* {
+    box-sizing: border-box;
+    -ms-overflow-style: none;
+    scrollbar-width: none;
+    transition: color 0.5s, background-color 0.5s;
+}
+
+::-webkit-scrollbar {
+    display: none;
+}
+
+body {
+    max-width: var(--body-width);
+    margin: 0 auto;
+    padding: 0 1rem;
+}
+
+header {
+    position: sticky;
+    top: 0;
+    height: 3rem;
+    height: min(calc(1.375rem + 2.5vw), 3rem);
+    display: flex;
+    flex-direction: row;
+    justify-content: space-between;
+    align-items: end;
+    gap: 1rem;
+    padding-left: 1rem;
+    padding-right: 0rem;
+    background-color: var(--secondary-bg);
+    border-bottom: 1px solid var(--secondary);
+    z-index: 5;
+}
+
+@media screen and (max-width: 1070px) {
+    header {
+        padding-left: 3rem;
+    }
+}
+
+header h1 {
+    font-size: max(calc(1.375rem + 1.5vw), 1.4rem);
+    line-height: 1;
+    margin-bottom: -0.4rem;
+    white-space: nowrap;
+}
+
+header .icons {
+    display: flex;
+    flex-direction: row;
+    justify-content: space-between;
+    align-items: center;
+    gap: 1rem;
+}
+
+h2 {
+    margin-top: 6rem;
+}
+
+header label svg {
+    width: 2rem;
+    height: 2rem;
+    position: relative;
+    filter: hue-rotate(var(--primaryHI)) saturate(40%) brightness(120%);
+    transition: all var(--theme-toggle__classic--duration) ease;
+}
+
+header label svg:hover {
+    filter: hue-rotate(var(--primaryHI)) saturate(40%) brightness(150%);
+}
+
+.spacer {
+    height: 100px;
+}
+
+footer {
+    position: fixed;
+    bottom: 0;
+    width: 1024px;
+    background: var(--secondary-bg);
+    padding-top: 1rem;
+    padding-bottom: 0.25rem;
+}

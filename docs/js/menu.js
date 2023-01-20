@@ -107,7 +107,9 @@ styleMenu.innerHTML = /*CSS*/ `
 
 .menuWrapper {
   position: fixed;
-  top: 1rem;
+  top: .5rem;
+  top: min(calc(.8vw), .5rem);
+
   left: 1rem;
   z-index: 10;
 }

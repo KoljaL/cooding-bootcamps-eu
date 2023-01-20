@@ -15,96 +15,8 @@
   </script>
 
   <link rel="stylesheet" href="./css/almostclassless.css">
+  <link rel="stylesheet" href="./css/layout.css">
   <style>
-    @font-face {
-      font-family: Overpass-Light;
-      src: url('./font/Overpass-Light.woff2') format('woff2');
-    }
-
-    @font-face {
-      font-family: Overpass-Regular;
-      src: url('./font/Overpass-Medium.woff2') format('woff2');
-    }
-
-    :root {
-      --header-height: 3.5rem;
-    }
-
-    * {
-      box-sizing: border-box;
-      -ms-overflow-style: none;
-      scrollbar-width: none;
-      transition: color 0.5s, background-color 0.5s;
-    }
-
-    ::-webkit-scrollbar {
-      display: none;
-    }
-
-    body {
-      max-width: 1024px;
-      margin: 0 auto;
-      padding: 0 1rem;
-    }
-
-    header {
-      position: sticky;
-      top: 0;
-      height: var(--header-height);
-      display: flex;
-      flex-direction: row;
-      justify-content: space-between;
-      align-items: baseline;
-      gap: 1rem;
-      padding-inline: 1rem;
-      background-color: var(--secondary-bg);
-      border-bottom: 1px solid var(--secondary);
-      z-index: 5;
-    }
-
-    header h1 {
-      margin: .5rem 0 0;
-    }
-
-    header .icons {
-      display: flex;
-      flex-direction: row;
-      justify-content: space-between;
-      align-items: center;
-      gap: 1rem;
-    }
-
-    h2 {
-      margin-top: 6rem;
-    }
-
-    header label svg {
-      width: 2.5rem;
-      height: 2.5rem;
-      position: relative;
-      /* top: .5rem; */
-      filter: hue-rotate(var(--primaryHI)) saturate(40%) brightness(120%);
-      transition: all var(--theme-toggle__classic--duration) ease;
-    }
-
-    header label svg:hover {
-      filter: hue-rotate(var(--primaryHI)) saturate(40%) brightness(150%);
-    }
-
-    .spacer {
-      height: 100px;
-    }
-
-    footer {
-      position: fixed;
-      bottom: 0;
-      width: 1024px;
-      background: var(--secondary-bg);
-      padding-top: 1rem;
-      padding-bottom: .25rem;
-    }
-
-
     .passwordToggle form {
       display: grid;
       grid-template-columns: 250px 100px;
@@ -306,6 +218,8 @@
       border-radius: 50%;
       position: relative;
       background: radial-gradient(var(--secondary-bg), var(--secondary-bg1));
+      /* scale: .6; */
+      /* scale: max(0.8, 100%); */
     }
 
     /* screen smaller then 500 px media query */
