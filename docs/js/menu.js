@@ -6,22 +6,44 @@ const menu = [
         children: [
             {
                 title: 'toggle Theme',
-                path: '/toggleTheme.html',
+                path: './toggleTheme.html',
                 desc: 'Toggle between light and dark theme',
+                link: 'https://github.com/KoljaL/cooding-bootcamps-eu/blob/master/docs/toggleTheme.html',
             },
             {
                 title: 'other Basics',
-                path: '/webappbasic.html',
+                path: './webappbasic.html',
                 desc: 'Some other basics',
+                link: 'https://github.com/KoljaL/cooding-bootcamps-eu/blob/master/docs/webappbasic.html',
             },
         ],
     },
 ];
 
+// function to filter the link of the current page from the menu
+function filterMenu(currentPage) {
+    let link = '';
+    const menuForFilter = menu;
+    const filteredMenu = menuForFilter.filter((item) => {
+        if (item.path === currentPage) {
+            return false;
+        }
+        if (item.children) {
+            item.children = item.children.filter((subItem) => {
+                if (subItem.path === currentPage) {
+                    link = subItem.link;
+                    return true;
+                }
+            });
+        }
+        return true;
+    });
+    return link;
+}
+
 // function that generates a nested Menu
 function generateMenu(menu) {
     const currentPage = '/' + window.location.href.split('/').pop();
-    console.log(currentPage);
     const menuWrapper = document.createElement('div');
     menuWrapper.classList.add('menuWrapper');
     const menuEl = document.createElement('ul');
@@ -40,9 +62,6 @@ function generateMenu(menu) {
             item.children.forEach((subItem) => {
                 const subMenuItem = document.createElement('li');
                 subMenuItem.classList.add('sub-menu-item');
-                console.log(' ');
-                console.log(currentPage);
-                console.log(subItem.path);
                 if (currentPage === subItem.path) {
                     const span = document.createElement('span');
                     span.innerHTML = subItem.title;
@@ -65,6 +84,17 @@ function generateMenu(menu) {
             menuItem.appendChild(subMenu);
         }
     });
+    const ghLink = filterMenu(currentPage);
+    if (ghLink) {
+        const ghli = document.createElement('li');
+        const ghLinkEl = document.createElement('a');
+        ghLinkEl.href = ghLink;
+        ghLinkEl.target = '_blank';
+        ghLinkEl.innerHTML = 'This code on Github';
+        ghLinkEl.classList.add('gh-link');
+        ghli.appendChild(ghLinkEl);
+        menuEl.appendChild(ghli);
+    }
 }
 
 // <div class="menuWrapper">
@@ -104,7 +134,7 @@ styleMenu.innerHTML = /*CSS*/ `
 }
 
 .menu {
-  display: none;
+  // display: none;
   position: absolute;
   top: 1rem;
   left: 1rem;
@@ -170,11 +200,23 @@ styleMenu.innerHTML = /*CSS*/ `
 .menu span.current {
   font-weight: bold;
   font-variant: normal;
-  font-size: 1.2rem;
-  filter:brightness(120%);
-  color: var(--primary-darker,var(--border-color));
+  border-radius: 5px;
+  padding-top: .25rem;
+  padding-bottom: .15rem;
+  padding-inline: .5rem;
+  white-space: nowrap;
+  // color:white;
+  // filter:brightness(120%);
+  background: var(--primary-darker,var(--border-color));
 }
 
+.menu .gh-link {
+  padding-top: 1.5rem;
+  font-size: 1rem;
+  font-variant: normal;
+  font-weight: bold;
+  filter: brightness(120%);
+}
 `;
 document.head.appendChild(styleMenu);
 generateMenu(menu);
