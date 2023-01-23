@@ -1,0 +1,366 @@
+<!DOCTYPE html>
+<html lang="en" data-theme="dark">
+
+<head>
+  <meta charset="UTF-8">
+  <meta http-equiv="X-UA-Compatible" content="IE=edge">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <link href="img/favicon-dark.png" rel="icon" />
+  <title>Web App Basic - ToDo</title>
+  <script>
+    document.documentElement.setAttribute('data-theme', window.matchMedia('(prefers-color-scheme: dark)').matches ? 'dark' : 'light')
+  </script>
+  <link rel="stylesheet" href="./css/almostclassless.css">
+  <link rel="stylesheet" href="./css/layout.css">
+
+  <style>
+    * {
+      transition: all 0.3s ease-in-out;
+    }
+
+    .success {
+      border: 1px solid var(--correct) !important;
+    }
+
+    .fail {
+      border: 1px solid var(--error) !important;
+    }
+
+    ul {
+      margin: 0;
+      padding: 0;
+    }
+
+    li {
+      list-style: none;
+    }
+
+    .addItem form {
+      position: relative;
+    }
+
+    .addItem .message {
+      position: absolute;
+      padding: .25rem .5rem;
+    }
+
+    .showList label {
+      display: flex;
+      align-items: center;
+      gap: 1rem;
+    }
+
+    .showList button {
+      padding: .25rem .35rem;
+      border: 1px solid var(--primary);
+      border-radius: 5px;
+      background: transparent;
+      color: var(--secondary);
+      font-size: .8rem;
+      line-height: .8rem;
+      min-height: 1rem;
+      margin-right: 1rem;
+    }
+
+    .showList button.active {
+      background: var(--primary);
+      color: var(--secondary);
+    }
+
+    section.debug {
+      position: absolute;
+      top: 2rem;
+      left: 30rem;
+    }
+  </style>
+</head>
+
+<body>
+  <header>
+    <h1>ToDo-List</h1>
+    <span class="icons">
+      <label class="theme-toggle" title="Toggle theme"></label>
+    </span>
+  </header>
+
+  <section class="addItem">
+    <form>
+      <label for="todoItem">
+        <h2>Add ToDo Item</h2>
+      </label>
+      <input type="text" placeholder="Add ToDo Item" />
+      <button type="submit">Add</button>
+    </form>
+    <p class="message"></p>
+  </section>
+
+  <section class="showList">
+    <h2>ToDo List</h2>
+    <p>
+      <button class="showOpen">open</button>
+      <button class="showDone">done</button>
+      <button class="showAll active">all</button>
+    </p>
+    <ul class="todoList"></ul>
+  </section>
+
+  <section class="debug">
+    <h2>Debug</h2>
+    <button class="debugItems">show Items</button>
+    <pre>
+      <code id="debug"></code>
+    </pre>
+  </section>
+
+  <script>
+    //  define variables for DOM elements
+    const form = document.querySelector('form');
+    const input = document.querySelector('input');
+    const message = document.querySelector('.message');
+    const todoList = document.querySelector('.todoList');
+    const debug = document.querySelector('#debug');
+    const debugItems = document.querySelector('.debugItems');
+    const showAll = document.querySelector('.showAll');
+    const showOpen = document.querySelector('.showOpen');
+    const showDone = document.querySelector('.showDone');
+
+    // define existing ToDo Items
+    var existingToDoItems = [
+      {
+        id: 'dU83G',
+        text: 'Learn HTML',
+        done: true
+      },
+      {
+        id: 'o0sZ3',
+        text: 'Learn CSS',
+        done: false
+      },
+      {
+        id: 'dj5ie',
+        text: 'Learn JavaScript',
+        done: false
+      }
+    ];
+
+    if (localStorage.getItem('todo')) {
+      existingToDoItems = JSON.parse(localStorage.getItem('todo'));
+    }
+
+
+    //
+    // define eventlistener 
+    //
+    // init
+    document.addEventListener('DOMContentLoaded', function () {
+      createList();
+      showExistingItems();
+    });
+
+    // filter ToDo Items
+    showDone.addEventListener('click', () => {
+      showDone.classList.add('active');
+      showOpen.classList.remove('active');
+      showAll.classList.remove('active');
+      createList('done');
+    });
+    showOpen.addEventListener('click', () => {
+      showOpen.classList.add('active');
+      showDone.classList.remove('active');
+      showAll.classList.remove('active');
+      createList('open');
+    });
+    showAll.addEventListener('click', () => {
+      showAll.classList.add('active');
+      showDone.classList.remove('active');
+      showOpen.classList.remove('active');
+      createList('all');
+    });
+
+
+
+    //
+    // create ToDo list from array, mint the state
+    //
+    function createList(state = 'all') {
+      todoList.innerHTML = '';
+      if (state === 'all') {
+        existingToDoItems.forEach(function (item) {
+          newItemToDOM(item.id, item.text, item.done)
+        });
+      } else if (state === 'open') {
+        existingToDoItems.forEach(function (item) {
+          if (item.done === false) {
+            newItemToDOM(item.id, item.text, item.done)
+          }
+        });
+      } else if (state === 'done') {
+        existingToDoItems.forEach(function (item) {
+          if (item.done === true) {
+            newItemToDOM(item.id, item.text, item.done)
+          }
+        });
+      }
+      input.focus();
+    }
+
+
+    // 
+    // check for duplicates on keyup
+    //
+    input.addEventListener('keyup', () => {
+      existingToDoItems.forEach(item => {
+        if (item.text === input.value) {
+          input.classList.add('fail');
+          message.textContent = 'ToDo Item already exists';
+          setTimeout(function () {
+            message.textContent = '';
+            input.classList.remove('fail');
+          }, 2000);
+        }
+      });
+    });
+
+
+
+
+
+    //
+    // add new ToDo Item to DOM
+    //
+    function newItemToDOM(todoID, todoText, done = false) {
+      const li = document.createElement('li');
+      li.id = todoID;
+      const label = document.createElement('label');
+      label.textContent = todoText;
+
+      label.addEventListener("contextmenu", (e) => {
+        e.preventDefault();
+        console.log(e.target.innerText);
+        let text = "remove item :" + e.target.innerText + "?";
+        if (confirm(text) == true) {
+          const index = existingToDoItems.findIndex(function (item) {
+            return item.id === e.target.parentElement.id;
+          });
+          existingToDoItems.splice(index, 1);
+          showExistingItems();
+          document.getElementById(e.target.parentElement.id).remove();
+        }
+      });
+
+
+      const ckb = document.createElement('input');
+      ckb.type = 'checkbox';
+      ckb.checked = done;
+      ckb.classList = 'slider';
+      ckb.addEventListener('change', function (e) {
+        const id = e.target.parentElement.parentElement.id;
+        const index = existingToDoItems.findIndex(function (item) {
+          return item.id === id;
+        });
+        existingToDoItems[index].done = e.target.checked;
+        showExistingItems();
+      });
+      // concat checkbox and label
+      label.insertBefore(ckb, label.firstChild);
+      li.appendChild(label);
+      todoList.appendChild(li);
+    }
+
+    //  
+    // handle the submit event
+    //
+    form.addEventListener('submit', function (e) {
+      e.preventDefault();
+      const todoText = input.value.trim();
+      const todoID = chrateID();
+
+      if (todoText.length) {
+        // remove focus from input field
+        input.blur();
+        // add new ToDo Item to List
+        newItemToDOM(todoID, todoText)
+        // handle input field
+        input.classList.add('success');
+        input.value = '';
+        message.textContent = 'Item added';
+        setTimeout(function () {
+          message.textContent = '';
+          input.placeholder = 'Add next ToDo Item';
+          input.classList.remove('success');
+          input.focus();
+        }, 1500);
+
+        // add new ToDo Item to Array
+        existingToDoItems.push({
+          id: todoID,
+          text: todoText,
+          done: false
+        });
+        console.log(existingToDoItems);
+        showExistingItems()
+      }
+      // handle empty input field
+      else {
+        input.classList.add('fail');
+        input.value = '';
+        message.textContent = 'Please enter a ToDo Item';
+        setTimeout(function () {
+          message.textContent = '';
+          input.classList.remove('fail');
+          input.focus();
+        }, 1000);
+      }
+    });
+
+
+
+
+
+
+
+    // 
+    // create ID
+    //
+    function chrateID() {
+      const chars = '0123456789abcdefghiklmnopqrstuvwxyzABCDEFGHIJKLMNOPQRSTUVWXTZ';
+      let str = '';
+      for (let i = 0; i < 5; i++) {
+        str += chars[Math.floor(Math.random() * chars.length)];
+      }
+      return str;
+    }
+
+
+    //
+    // DEBUG show existing items
+    //
+    debugItems.addEventListener('click', () => {
+      showExistingItems();
+    });
+
+    function showExistingItems() {
+      let todoString = JSON.stringify(existingToDoItems, null, 2);
+      window.localStorage.setItem('todo', todoString);
+      debug.textContent = todoString
+      console.log('debug')
+    }
+
+
+  </script>
+
+
+  <div class="spacer"></div>
+  <footer>
+    <p>
+      <a target="_blank" class="sourceCode" href="https://github.com/KoljaL/cooding-bootcamps-eu/blob/master/docs/webappbasic.html">Source Code on GitHub</a>
+    </p>
+  </footer>
+
+  <!-- END OF HTML -->
+  <script src="./js/menu.js"></script>
+  <script src="./js/toggleTheme.js"></script>
+
+</body>
+
+</html>

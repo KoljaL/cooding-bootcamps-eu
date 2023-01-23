@@ -17,10 +17,10 @@ const menu = [
                 link: 'https://github.com/KoljaL/cooding-bootcamps-eu/blob/master/docs/webappbasic.html',
             },
             {
-                title: 'Notes',
-                path: './notes.html',
-                desc: 'A note taking app',
-                link: 'https://github.com/KoljaL/cooding-bootcamps-eu/blob/master/docs/notes.html',
+                title: 'ToDo-List',
+                path: './todo.html',
+                desc: 'An App to add & remove ToDo-Items',
+                link: 'https://github.com/KoljaL/cooding-bootcamps-eu/blob/master/docs/todo.html',
             },
         ],
     },
@@ -32,6 +32,12 @@ const menu = [
                 path: './fadeInModal.html',
                 desc: 'a demonstration, how to fade in and out a modal',
                 link: 'https://github.com/KoljaL/cooding-bootcamps-eu/blob/master/docs/fadeInModal.html',
+            },
+            {
+                title: 'Neumorphism',
+                path: './neumorphism.html',
+                desc: 'playaround with neumorphism',
+                link: 'https://github.com/KoljaL/cooding-bootcamps-eu/blob/master/docs/neumorphism.html',
             },
         ],
     },
@@ -65,6 +71,13 @@ function generateMenu(menu) {
     menuWrapper.classList.add('menuWrapper');
     const menuEl = document.createElement('ul');
     menuEl.classList.add('menu');
+
+    const menuItem = document.createElement('li');
+    menuItem.classList.add('menu-item');
+    menuItem.innerHTML = '<li><a href="./">Index</a></li>';
+    // menuItem.innerHTML = item.title;
+
+    menuEl.appendChild(menuItem);
     menuWrapper.appendChild(menuEl);
     document.body.appendChild(menuWrapper);
 
@@ -215,13 +228,14 @@ styleMenu.innerHTML = /*CSS*/ `
 .menu span.current {
   font-weight: bold;
   font-variant: normal;
-  border-radius: 5px;
-  padding-top: .25rem;
-  padding-bottom: .15rem;
-  padding-inline: .5rem;
+  text-decoration: underline;
+  // border-radius: 5px;
+  // padding-top: .25rem;
+  // padding-bottom: .15rem;
+  // padding-inline: .5rem;
   white-space: nowrap;
-  color:#ccc;
-  background: var(--primary-dark,var(--link-color));
+  // color:#ccc;
+  // background: var(--primary-dark,var(--link-color));
 }
 
 .menu .gh-link {

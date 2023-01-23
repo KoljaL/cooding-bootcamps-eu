@@ -109,7 +109,6 @@
 <header>
   <h1>Web Apps Foundation</h1>
   <span class="icons">
-
     <label class="theme-toggle" title="Toggle theme"></label>
   </span>
 </header>
@@ -120,7 +119,10 @@
   <button id="openModal">Open Modal</button>
   <br>
   <br>
-  Status: <span class=status>please klick the botton</span>
+  <h3>States</h3>
+  <ol class=state>
+    <li>please klick the botton</li>
+  </ol>
 
 
   <div id="modal" class="modal">
@@ -135,24 +137,25 @@
 <script>
   var modal = document.querySelector("#modal");
   var openBtn = document.querySelector("#openModal");
-  var statusText = document.querySelector(".status");
+  var stateList = document.querySelector(".state");
   var closeBtn = document.querySelector(".close");
 
   openBtn.onclick = function () {
     modal.classList.add("fadeIn");
     modal.style.display = "block";
-    statusText.innerHTML = "display:block & class .fadeIn";
+    stateList.innerHTML = stateList.innerHTML + "<li>display:block & class .fadeIn</li>";
   };
 
   closeBtn.onclick = function () {
     modal.classList.remove("fadeIn");
     modal.classList.add("fadeOut");
-    statusText.innerHTML = "removed class .fadeIn, new class fadeOut";
+    stateList.innerHTML = stateList.innerHTML + "<li>removed class .fadeIn, new class fadeOut</li>";
 
     setTimeout(() => {
       modal.style.display = "none";
       modal.classList.remove("fadeOut");
-      statusText.innerHTML = "removed class .fadeout, display: none";
+      stateList.innerHTML = stateList.innerHTML + "<li>removed class .fadeout, display: none</li>";
+      stateList.innerHTML = stateList.innerHTML + "<li style='margin-top:1rem;'>please ckick the button again</li>";
     }, 1000);
   };
 
