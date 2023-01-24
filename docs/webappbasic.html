@@ -335,9 +335,17 @@
       margin: 0;
     }
 
+    main {
+      background-color: var(--secondary-bg);
+      margin-bottom: 10rem;
+
+    }
+
+    /* section:last-of-type {
+    } */
+
     footer {
-      z-index: 10;
-      ;
+      z-index: -1;
     }
   </style>
 </head>
@@ -353,99 +361,102 @@
   </header>
 
 
-  <section class="passwordToggle">
-    <h2>Password toggle</h2>
-    <form>
-      <label for="password">Password</label>
+  <main>
+
+
+    <section class="passwordToggle">
+      <h2>Password toggle</h2>
+      <form>
+        <label for="password">Password</label>
+        <br>
+        <input type="password" id="password" name="password" value="top secret">
+        <button type="button" id="toggle" onclick="togglePassword()">Show</button>
+      </form>
+      <p class="description">
+        Just a simple toggle switch between <code>&lt;input type=&quot;password&quot;&gt;</code> and <code>&lt;input type=&quot;password&quot;&gt;</code>.
+      </p>
+    </section>
+
+    <section class="fastcheapgood">
+      <h2>fast cheap good</h2>
+      <form autocomplete="off">
+        <input type="checkbox" id="fast" class="slider">
+        <label for="fast">Fast</label>
+        <input type="checkbox" id="cheap" class="slider">
+        <label for="cheap">Cheap</label>
+        <input type="checkbox" id="good" class="slider">
+        <label for="good">Good</label>
+      </form>
+      <p class="description">
+        It is impossible to have all three of these things at the same time. If you want something to be fast, it will not be cheap. If you want something to be cheap, it will not be good. If you want something to be good, it will not be fast.
+      </p>
+    </section>
+
+    <section class="counter">
+      <h2>Counter</h2>
+      <button class="counterReset">Reset</button>
+      <div class="counterBackground">
+        <div class="counterValue">click here</div>
+        <div class="counterBackgroundWidth"></div>
+      </div>
+      <p class="description">
+        A simple counter that counts up to 100 and then resets. The background color changes from green to red as the counter increases.
+        The countdown time is always one second, regardless of the state of the counter.
+        You can use your keyboard to increase the counter by pressing the <kbd>spacebar</kbd> or <kbd>enter</kbd>, <kbd>backspace</kbd> for decrease anr <kbd>R</kbd> for reset.
+      </p>
+    </section>
+
+    <section class="colorSlider">
+      <h2>Color Slider</h2>
+      <button class="randomColor">Random</button>
+      <div class="colorPreview">
+        <span class="colorName">#000000</span>
+      </div>
       <br>
-      <input type="password" id="password" name="password" value="top secret">
-      <button type="button" id="toggle" onclick="togglePassword()">Show</button>
-    </form>
-    <p class="description">
-      Just a simple toggle switch between <code>&lt;input type=&quot;password&quot;&gt;</code> and <code>&lt;input type=&quot;password&quot;&gt;</code>.
-    </p>
-  </section>
+      <form autocomplete="off">
+        <div>
+          <span class="redValue">186</span>
+          <input type="range" min="0" max="255" value="186" class="red">
+        </div>
+        <div>
+          <span class="greenValue">218</span>
+          <input type="range" min="0" max="255" value="218" class="green">
+        </div>
+        <div>
+          <span class="blueValue">85</span>
+          <input type="range" min="0" max="255" value="85" class="blue">
+        </div>
+      </form>
+      <p class="description">
+        A simple RGB-color slider for that changes the background color of the element above. The random colors are taken from an array.
+      </p>
+    </section>
 
-  <section class="fastcheapgood">
-    <h2>fast cheap good</h2>
-    <form autocomplete="off">
-      <input type="checkbox" id="fast" class="slider">
-      <label for="fast">Fast</label>
-      <input type="checkbox" id="cheap" class="slider">
-      <label for="cheap">Cheap</label>
-      <input type="checkbox" id="good" class="slider">
-      <label for="good">Good</label>
-    </form>
-    <p class="description">
-      It is impossible to have all three of these things at the same time. If you want something to be fast, it will not be cheap. If you want something to be cheap, it will not be good. If you want something to be good, it will not be fast.
-    </p>
-  </section>
 
-  <section class="counter">
-    <h2>Counter</h2>
-    <button class="counterReset">Reset</button>
-    <div class="counterBackground">
-      <div class="counterValue">click here</div>
-      <div class="counterBackgroundWidth"></div>
-    </div>
-    <p class="description">
-      A simple counter that counts up to 100 and then resets. The background color changes from green to red as the counter increases.
-      The countdown time is always one second, regardless of the state of the counter.
-      You can use your keyboard to increase the counter by pressing the <kbd>spacebar</kbd> or <kbd>enter</kbd>, <kbd>backspace</kbd> for decrease anr <kbd>R</kbd> for reset.
-    </p>
-  </section>
-
-  <section class="colorSlider">
-    <h2>Color Slider</h2>
-    <button class="randomColor">Random</button>
-    <div class="colorPreview">
-      <span class="colorName">#000000</span>
-    </div>
-    <br>
-    <form autocomplete="off">
-      <div>
-        <span class="redValue">186</span>
-        <input type="range" min="0" max="255" value="186" class="red">
+    <section class="clock">
+      <h2>Clock</h2>
+      <div class="clockBackground hide">
+        <div class="hour"></div>
+        <div class="minute"></div>
+        <div class="second"></div>
+        <div class="centerdot"></div>
+        <div class="digitalClock">
+          <span class="digitalClockHour">00</span> :
+          <span class="digitalClockMinute">00</span> :
+          <span class="digitalClockSecond">00</span>
+        </div>
       </div>
-      <div>
-        <span class="greenValue">218</span>
-        <input type="range" min="0" max="255" value="218" class="green">
-      </div>
-      <div>
-        <span class="blueValue">85</span>
-        <input type="range" min="0" max="255" value="85" class="blue">
-      </div>
-    </form>
-    <p class="description">
-      A simple RGB-color slider for that changes the background color of the element above. The random colors are taken from an array.
-    </p>
-  </section>
+      <p>
+        <input type="checkbox" id="runfast" style="display:none" autocomplete="off">
+        <label id=runfastButton for="runfast">Runfast</label>
+      </p>
+      <p class="description">
+        The clock has a fixed size and is downscaled from a window width of less than 500px. <kbd>Runfast</kbd> increases the speed by 120 times.
+      </p>
+    </section>
 
+  </main>
 
-  <section class="clock">
-    <h2>Clock</h2>
-    <div class="clockBackground hide">
-      <div class="hour"></div>
-      <div class="minute"></div>
-      <div class="second"></div>
-      <div class="centerdot"></div>
-      <div class="digitalClock">
-        <span class="digitalClockHour">00</span> :
-        <span class="digitalClockMinute">00</span> :
-        <span class="digitalClockSecond">00</span>
-      </div>
-    </div>
-    <p>
-      <input type="checkbox" id="runfast" style="display:none" autocomplete="off">
-      <label id=runfastButton for="runfast">Runfast</label>
-    </p>
-    <p class="description">
-      The clock has a fixed size and is downscaled from a window width of less than 500px. <kbd>Runfast</kbd> increases the speed by 120 times.
-    </p>
-  </section>
-
-
-  <div class="spacer"></div>
   <footer>
     <p>
       <a target="_blank" class="sourceCode" href="https://github.com/KoljaL/cooding-bootcamps-eu/blob/master/docs/webappbasic.html">Source Code on GitHub</a>
