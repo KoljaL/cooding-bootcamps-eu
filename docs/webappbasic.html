@@ -233,8 +233,18 @@
       position: absolute;
       top: 50%;
       border-radius: 50%;
+    }
+
+    .clockBackground.hide>div {
       display: none;
     }
+
+    .clock {
+      --secondsDegrees: 0;
+      --minutesDegrees: 0;
+      --hoursDegrees: 0;
+    }
+
 
     .hour {
       background: var(--primary);
@@ -242,6 +252,7 @@
       height: 6px;
       top: calc(50% - 3px) !important;
       left: calc(50% - 100px);
+      transform: rotate(var(--hoursDegrees)) translateX(-100px);
     }
 
     .minute {
@@ -251,6 +262,7 @@
       top: calc(50% - 2px) !important;
       left: calc(50% - 110px);
       z-index: 5;
+      transform: rotate(var(--minutesDegrees)) translateX(-110px);
     }
 
     .second {
@@ -260,6 +272,7 @@
       top: calc(50% - 1px) !important;
       left: calc(50% - 120px);
       z-index: 5;
+      transform: rotate(var(--secondsDegrees)) translateX(-120px);
     }
 
     .centerdot {
@@ -411,7 +424,7 @@
 
   <section class="clock">
     <h2>Clock</h2>
-    <div class="clockBackground">
+    <div class="clockBackground hide">
       <div class="hour"></div>
       <div class="minute"></div>
       <div class="second"></div>
@@ -439,6 +452,9 @@
     </p>
   </footer>
 
+  <style>
+
+  </style>
 
   <!-- END OF HTML -->
   <script src="./js/toggleTheme.js"></script>
@@ -456,6 +472,7 @@
     const digitalClockHour = document.querySelector('.digitalClockHour');
     const digitalClockMinute = document.querySelector('.digitalClockMinute');
     const digitalClockSecond = document.querySelector('.digitalClockSecond');
+    const clockBackground = document.querySelector('.clockBackground');
     const runfast = document.querySelector('#runfast');
 
     runfast.addEventListener('change', function () {
@@ -481,26 +498,25 @@
     function clockFunction() {
       const now = getDate();
       const seconds = now.getSeconds();
-      digitalClockSecond.textContent = seconds < 10 ? `0${seconds}` : seconds;
-      const secondsDegrees = ((seconds / 60) * 360) + 90;
-      clockSecond.style.transform = `rotate(${secondsDegrees}deg) translateX(-120px)`;
       const minutes = now.getMinutes();
-      digitalClockMinute.textContent = minutes < 10 ? `0${minutes}` : minutes;
-      const minutesDegrees = ((minutes / 60) * 360) + 90;
-      clockMinute.style.transform = `rotate(${minutesDegrees}deg) translateX(-110px)`;
       const hours = now.getHours();
-      digitalClockHour.textContent = hours < 10 ? `0${hours}` : hours;
+      const secondsDegrees = ((seconds / 60) * 360) + 90;
+      const minutesDegrees = ((minutes / 60) * 360) + 90;
       const hoursDegrees = ((hours / 12) * 360) + 90;
-      clockHour.style.transform = `rotate(${hoursDegrees}deg) translateX(-100px)`;
+
+      clockBackground.style.setProperty('--secondsDegrees', secondsDegrees);
+      clockBackground.style.setProperty('--minutesDegrees', minutesDegrees);
+      clockBackground.style.setProperty('--hoursDegrees', hoursDegrees);
+
+      digitalClockSecond.textContent = seconds < 10 ? `0${seconds}` : seconds;
+      digitalClockMinute.textContent = minutes < 10 ? `0${minutes}` : minutes;
+      digitalClockHour.textContent = hours < 10 ? `0${hours}` : hours;
     }
     // run clock function every second
     // setInterval(clockFunction, 200);
     // show clock elements after page load
     setTimeout(() => {
-      clockHour.style.display = 'block';
-      clockMinute.style.display = 'block';
-      clockSecond.style.display = 'block';
-      digitalClock.style.display = 'block';
+      clockBackground.classList.remove('hide');
     }, 1000);
 
 
