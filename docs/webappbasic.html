@@ -504,9 +504,9 @@
       const minutesDegrees = ((minutes / 60) * 360) + 90;
       const hoursDegrees = ((hours / 12) * 360) + 90;
 
-      clockBackground.style.setProperty('--secondsDegrees', secondsDegrees);
-      clockBackground.style.setProperty('--minutesDegrees', minutesDegrees);
-      clockBackground.style.setProperty('--hoursDegrees', hoursDegrees);
+      clockBackground.style.setProperty('--secondsDegrees', secondsDegrees + 'deg');
+      clockBackground.style.setProperty('--minutesDegrees', minutesDegrees + 'deg');
+      clockBackground.style.setProperty('--hoursDegrees', hoursDegrees + 'deg');
 
       digitalClockSecond.textContent = seconds < 10 ? `0${seconds}` : seconds;
       digitalClockMinute.textContent = minutes < 10 ? `0${minutes}` : minutes;
