@@ -241,11 +241,11 @@
       // await getAllTodos()
       //   .then(() => {
       //     createList();
-      //     showExistingItems();
+      //     showAndStoreExistingItems();
       //   });
       await getAllTodos()
       createList();
-      showExistingItems();
+      showAndStoreExistingItems();
     });
 
 
@@ -264,6 +264,11 @@
         existingToDoItems.forEach(function (item) {
           newItemToDOM(item.id, item.text, item.done)
         });
+        // for (let item of existingToDoItems) {
+        // console.log(item);
+        // setTimeout(() => {
+        // newItemToDOM(existingToDoItems[item].id, existingToDoItems[item].text, existingToDoItems[item].done)
+        // }, 2200);
       } else if (state === 'undone') {
         existingToDoItems.forEach(function (item) {
           if (item.done === false) {
@@ -326,8 +331,9 @@
           return item.id === id;
         });
         existingToDoItems.splice(index, 1);
-        showExistingItems();
+        showAndStoreExistingItems();
         document.getElementById(id).remove();
+        removeItemFromServer(id);
       });
 
 
@@ -343,7 +349,11 @@
           return item.id === id;
         });
         existingToDoItems[index].done = e.target.checked;
-        showExistingItems();
+        showAndStoreExistingItems();
+        let data = {
+          done: e.target.checked
+        }
+        patchItemOnServer(id, data)
       });
       // concat checkbox and label
       label.insertBefore(ckb, label.firstChild);
@@ -386,7 +396,7 @@
         existingToDoItems.push(newItem);
         saveNewItemOnServer(newItem);
         console.log(existingToDoItems);
-        showExistingItems()
+        showAndStoreExistingItems()
       }
       // handle empty input field
       else {
@@ -427,6 +437,47 @@
     }
 
 
+    //  
+    // REMOVE ITEM FROM SERVER
+    //
+    async function removeItemFromServer(id) {
+      try {
+        const response = fetch(`http://localhost:48329/todos/${id}`, {
+          method: "DELETE",
+          headers: {
+            "Content-Type": "application/json",
+          },
+        })
+        const json = response.json();
+        console.log(response);
+        headerMessageSuccess.textContent = 'ToDo Item removed from server';
+      } catch (error) {
+        console.error(error);
+        headerMessageError.textContent = 'NetworkError';
+      }
+    }
+
+    //
+    // PATCH ITEM ON THE SERVER
+    //
+    async function patchItemOnServer(id, data) {
+      try {
+        const response = fetch(`http://localhost:48329/todos/${id}`, {
+          method: "PATCH",
+          headers: {
+            "Content-Type": "application/json",
+          },
+          body: JSON.stringify(data),
+        })
+        const json = response.json();
+        console.log(response);
+        headerMessageSuccess.textContent = 'ToDo Item updated on server';
+      } catch (error) {
+        console.error(error);
+        headerMessageError.textContent = 'NetworkError';
+      }
+    }
+
 
 
     // 
@@ -443,13 +494,28 @@
 
 
     //
+    // get ISO Date
+    //
+    function getISODate() {
+      let date = new Date();
+      let dateFormatted = date.toISOString();
+      return dateFormatted;
+    }
+
+
+    //
     // DEBUG show existing items
     //
     debugItems.addEventListener('click', () => {
-      showExistingItems();
+      showAndStoreExistingItems();
     });
 
-    function showExistingItems() {
+
+    //
+    // DEBUG show existing items &&
+    // save existing items to localStorage
+    //
+    function showAndStoreExistingItems() {
       let todoString = JSON.stringify(existingToDoItems, null, 2);
       window.localStorage.setItem('todo', todoString);
       debug.textContent = todoString
