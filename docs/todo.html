@@ -33,6 +33,20 @@
 
     li {
       list-style: none;
+      display: flex;
+      align-items: center;
+      gap: 1rem;
+      cursor: pointer;
+    }
+
+    .removeItem {
+      opacity: 0;
+      color: brown;
+    }
+
+    li:hover .removeItem {
+      opacity: 1;
+      color: darkred;
     }
 
     .addItem form {
@@ -72,34 +86,73 @@
       top: 2rem;
       right: 3rem;
     }
+
+    .header__message {
+      /* transform: translateY(3rem); */
+      display: flex;
+      align-items: flex-end;
+      gap: 1rem;
+      flex-direction: row;
+    }
+
+    .header__message--success {
+      color: var(--correct);
+      margin: 0;
+    }
+
+    .header__message--error {
+      color: var(--error);
+      margin: 0;
+    }
+
+    select.filterItems {
+      min-width: 7rem;
+      width: 7rem;
+      height: 1.8rem;
+      margin: 0;
+      padding: .4rem;
+      border: 1px solid var(--primary);
+      border-radius: 5px;
+      background-color: transparent;
+      color: var(--secondary);
+      font-size: .8rem;
+      line-height: .8rem;
+      background-size: .8rem;
+    }
   </style>
 </head>
 
 <body>
   <header>
     <h1>ToDo-List</h1>
+    <div class="header__message">
+      <p class="header__message--error"></p>
+      <p class="header__message--success"></p>
+    </div>
     <span class="icons">
       <label class="theme-toggle" title="Toggle theme"></label>
     </span>
   </header>
 
   <section class="addItem">
+    <h2>Add ToDo Item</h2>
     <form>
-      <label for="todoItem">
-        <h2>Add ToDo Item</h2>
-      </label>
       <input type="text" placeholder="Add ToDo Item" />
-      <button type="submit">Add</button>
+      <button class="addNewItemButton" type="submit">Add</button>
     </form>
     <p class="message"></p>
   </section>
 
   <section class="showList">
     <h2>ToDo List</h2>
+
     <p>
-      <button class="showAll active">all</button>
-      <button class="showOpen">open</button>
-      <button class="showDone">done</button>
+      <select class="filterItems">
+        <option value="all">All</option>
+        <option value="undone">Undone</option>
+        <option value="done">Done</option>
+      </select>
+
     </p>
     <ul class="todoList"></ul>
   </section>
@@ -115,36 +168,66 @@
   <script>
     //  define variables for DOM elements
     const form = document.querySelector('form');
+    const addNewItemButton = document.querySelector('.addNewItemButton');
     const input = document.querySelector('input');
     const message = document.querySelector('.message');
     const todoList = document.querySelector('.todoList');
     const debug = document.querySelector('#debug');
     const debugItems = document.querySelector('.debugItems');
-    const showAll = document.querySelector('.showAll');
-    const showOpen = document.querySelector('.showOpen');
-    const showDone = document.querySelector('.showDone');
+    const filterItems = document.querySelector('.filterItems');
+    const headerMessageSuccess = document.querySelector('.header__message--success');
+    const headerMessageError = document.querySelector('.header__message--error');
+    var existingToDoItems
+    addNewItemButton.disabled = true;
 
-    // define existing ToDo Items
-    var existingToDoItems = [
-      {
-        id: 'dU83G',
-        text: 'Learn HTML',
-        done: true
-      },
-      {
-        id: 'o0sZ3',
-        text: 'Learn CSS',
-        done: false
-      },
-      {
-        id: 'dj5ie',
-        text: 'Learn JavaScript',
-        done: false
+    // define existing ToDo Items -- OLD WAY
+    // existingToDoItems = [
+    //   {
+    //     id: 'dU83G',
+    //     text: 'Learn HTML',
+    //     done: true
+    //   },
+    //   {
+    //     id: 'o0sZ3',
+    //     text: 'Learn CSS',
+    //     done: false
+    //   },
+    //   {
+    //     id: 'dj5ie',
+    //     text: 'Learn JavaScript',
+    //     done: false
+    //   }
+    // ];
+
+
+
+    // TODO what is the "better" way?
+    // fetch('http://localhost:48329/todos')
+    //   .then(response => response.json())
+    //   .catch(error => console.error('Error:', error))
+    //   .then(response => console.log('Success:', response));
+
+
+    async function getAllTodos() {
+      try {
+
+        const response = await fetch('http://localhost:48329/todos');
+        const json = await response.json();
+        console.log(json);
+        // setTimeout(() => { // a test to slow down the connection
+        existingToDoItems = json;
+        headerMessageSuccess.textContent = 'ToDo Items loaded from server';
+        // }, 1000);
+      } catch (error) {
+        console.error(error);
+        headerMessageError.textContent = 'NetworkError';
+        if (localStorage.getItem('todo')) {
+          existingToDoItems = JSON.parse(localStorage.getItem('todo'));
+          headerMessageSuccess.textContent = 'ToDo Items loaded from localStorage';
+        } else {
+          headerMessageError.textContent = 'ToDo Items could not be loaded';
+        }
       }
-    ];
-
-    if (localStorage.getItem('todo')) {
-      existingToDoItems = JSON.parse(localStorage.getItem('todo'));
     }
 
 
@@ -152,29 +235,22 @@
     // define eventlistener 
     //
     // init
-    document.addEventListener('DOMContentLoaded', function () {
+    document.addEventListener('DOMContentLoaded', async function () {
+      console.info('Init ToDo App')
+      // TODO why does this not work?
+      // await getAllTodos()
+      //   .then(() => {
+      //     createList();
+      //     showExistingItems();
+      //   });
+      await getAllTodos()
       createList();
       showExistingItems();
     });
 
-    // filter ToDo Items
-    showDone.addEventListener('click', () => {
-      showDone.classList.add('active');
-      showOpen.classList.remove('active');
-      showAll.classList.remove('active');
-      createList('done');
-    });
-    showOpen.addEventListener('click', () => {
-      showOpen.classList.add('active');
-      showDone.classList.remove('active');
-      showAll.classList.remove('active');
-      createList('open');
-    });
-    showAll.addEventListener('click', () => {
-      showAll.classList.add('active');
-      showDone.classList.remove('active');
-      showOpen.classList.remove('active');
-      createList('all');
+
+    filterItems.addEventListener('change', () => {
+      createList(filterItems.value);
     });
 
 
@@ -188,7 +264,7 @@
         existingToDoItems.forEach(function (item) {
           newItemToDOM(item.id, item.text, item.done)
         });
-      } else if (state === 'open') {
+      } else if (state === 'undone') {
         existingToDoItems.forEach(function (item) {
           if (item.done === false) {
             newItemToDOM(item.id, item.text, item.done)
@@ -211,12 +287,16 @@
     input.addEventListener('keyup', () => {
       existingToDoItems.forEach(item => {
         if (item.text === input.value) {
+          addNewItemButton.disabled = true;
           input.classList.add('fail');
           message.textContent = 'ToDo Item already exists';
           setTimeout(function () {
             message.textContent = '';
             input.classList.remove('fail');
           }, 2000);
+        } else {
+          input.classList.remove('fail');
+          addNewItemButton.disabled = false;
         }
       });
     });
@@ -234,19 +314,23 @@
       const label = document.createElement('label');
       label.textContent = todoText;
 
-      label.addEventListener("contextmenu", (e) => {
-        e.preventDefault();
-        console.log(e.target.innerText);
-        let text = "remove item :" + e.target.innerText + "?";
-        if (confirm(text) == true) {
-          const index = existingToDoItems.findIndex(function (item) {
-            return item.id === e.target.parentElement.id;
-          });
-          existingToDoItems.splice(index, 1);
-          showExistingItems();
-          document.getElementById(e.target.parentElement.id).remove();
-        }
+      const span = document.createElement('span');
+      span.textContent = 'x';
+      span.classList = 'removeItem';
+
+
+      span.addEventListener('click', function (e) {
+        console.log(e.target.parentElement.id);
+        const id = e.target.parentElement.id;
+        const index = existingToDoItems.findIndex(function (item) {
+          return item.id === id;
+        });
+        existingToDoItems.splice(index, 1);
+        showExistingItems();
+        document.getElementById(id).remove();
       });
+
+
 
 
       const ckb = document.createElement('input');
@@ -264,14 +348,16 @@
       // concat checkbox and label
       label.insertBefore(ckb, label.firstChild);
       li.appendChild(label);
+      li.appendChild(span);
       todoList.appendChild(li);
     }
 
     //  
     // handle the submit event
     //
-    form.addEventListener('submit', function (e) {
-      e.preventDefault();
+    form.addEventListener('submit', function (evt) {
+      console.log(evt)
+      evt.preventDefault();
       const todoText = input.value.trim();
       const todoID = chrateID();
 
@@ -292,11 +378,13 @@
         }, 1500);
 
         // add new ToDo Item to Array
-        existingToDoItems.push({
+        let newItem = {
           id: todoID,
           text: todoText,
           done: false
-        });
+        };
+        existingToDoItems.push(newItem);
+        saveNewItemOnServer(newItem);
         console.log(existingToDoItems);
         showExistingItems()
       }
@@ -315,6 +403,28 @@
 
 
 
+
+    //
+    // SAVE NEW ITEM ON SERVER
+    // 
+    async function saveNewItemOnServer(data) {
+      console.log(data)
+      try {
+        const response = fetch('http://localhost:48329/todos', {
+          method: "POST",
+          headers: {
+            "Content-Type": "application/json",
+          },
+          body: JSON.stringify(data),
+        })
+        const json = await response.json();
+        console.log(json);
+        // headerMessageSuccess.textContent = 'ToDo Items loaded from server';
+      } catch (error) {
+        console.error(error);
+        headerMessageError.textContent = 'NetworkError';
+      }
+    }
 
 
 
@@ -343,7 +453,6 @@
       let todoString = JSON.stringify(existingToDoItems, null, 2);
       window.localStorage.setItem('todo', todoString);
       debug.textContent = todoString
-      console.log('debug')
     }
 
 

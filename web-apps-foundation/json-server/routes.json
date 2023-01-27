@@ -1,0 +1,5 @@
+{
+    "/todos/:id": "/todos?id=:id",
+    "/todos/done": "/todos?done=true",
+    "/todos/undone": "/todos?done=false"
+}

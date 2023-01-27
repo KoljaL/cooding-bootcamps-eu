@@ -39,6 +39,13 @@ const menu = [
                 desc: 'playaround with neumorphism',
                 link: 'https://github.com/KoljaL/cooding-bootcamps-eu/blob/master/docs/neumorphism.html',
             },
+            ,
+            {
+                title: 'toggle SVG in CSS',
+                path: './toggleSVG.html',
+                desc: 'an aproach to toggle SVGs in CSS',
+                link: 'https://github.com/KoljaL/cooding-bootcamps-eu/blob/master/docs/toggleSVG.html',
+            },
         ],
     },
 ];

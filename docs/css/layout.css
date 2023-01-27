@@ -24,7 +24,7 @@
     box-sizing: border-box;
     -ms-overflow-style: none;
     scrollbar-width: none;
-    transition: color 0.5s, background-color 0.5s;
+    /* transition: color 0.5s, background-color 0.5s; */
 }
 
 ::-webkit-scrollbar {
@@ -63,7 +63,7 @@ header {
 }
 
 header h1 {
-    font-size: max(calc(1.375rem + 1.5vw), 1.4rem);
+    /* font-size: max(calc(1.375rem + 1.5vw), 1.4rem); */
     line-height: 1;
     margin-bottom: -0.4rem;
     white-space: nowrap;
