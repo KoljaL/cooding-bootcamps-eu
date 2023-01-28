@@ -1,27 +1,6 @@
 {
   "todos": [
     {
-      "id": "aseft",
-      "date_created": "2023-01-01T12:00:00.000Z",
-      "date_modified": "2023-01-27T23:40:52.147Z",
-      "text": "Learn HTML",
-      "done": true
-    },
-    {
-      "id": "desvg",
-      "date_created": "2023-01-04T04:00:00.000Z",
-      "date_modified": "2023-01-27T23:43:47.010Z",
-      "text": "dd CSS",
-      "done": true
-    },
-    {
-      "id": "dertg",
-      "date_created": "2023-01-12T14:00:00.000Z",
-      "date_modified": "2023-01-27T23:43:43.017Z",
-      "text": "wfww e323ewfwefe",
-      "done": true
-    },
-    {
       "id": "plOeW",
       "date_created": "2023-01-27T22:43:57.994Z",
       "date_modified": "2023-01-27T22:54:18.220Z",

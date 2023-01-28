@@ -474,8 +474,8 @@
       // get ToDo Items from server
       try {
         const response = await fetch(API);
-        serverToDoItems = await response.json();
-        console.log(serverToDoItems);
+        toDoItems = await response.json();
+        console.log(toDoItems);
         // setTimeout(() => { // a test to slow down the connection
         headerMessageSuccess.textContent = 'ToDo Items loaded from server';
         // }, 1000);
@@ -486,17 +486,18 @@
       // get ToDo Items from localStorage
       if (localStorage.getItem('todo')) {
         localStorageToDoItems = JSON.parse(localStorage.getItem('todo'));
-        headerMessageSuccess.textContent = 'ToDo Items loaded from localStorage';
-      } else {
-        headerMessageError.textContent = 'ToDo Items could not be loaded';
+        // headerMessageSuccess.textContent = 'ToDo Items loaded from localStorage';
       }
+      // else {
+      //   headerMessageError.textContent = 'ToDo Items could not be loaded';
+      // }
       // if server is not available use localStorage
-      if (!serverToDoItems) {
+      if (!toDoItems) {
         toDoItems = localStorageToDoItems;
       }
       //  if server and localStorage are available merge them
       else if (localStorageToDoItems) {
-        toDoItems = mergeToDoItems(serverToDoItems, localStorageToDoItems);
+        toDoItems = mergeToDoItems(toDoItems, localStorageToDoItems);
       }
       else {
         toDoItems = [
@@ -511,7 +512,9 @@
       }
     }
 
-    // merge ToDo Items from server and localStorage, if both are available, merge the one witht the most recent date_modified
+    // merge ToDo Items from server and localStorage
+    // take the most recent one
+    // TODO upload to server
     function mergeToDoItems(serverToDoItems, localStorageToDoItems) {
       let mergedToDoItems = [];
       let serverToDoItemsLength = serverToDoItems.length;
