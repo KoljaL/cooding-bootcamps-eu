@@ -175,6 +175,7 @@
       This is a simple ToDo-List. You can add new items, mark them as done, remove and edit them. <br>
       You can filter the list by all, done and undone items. <br>
       The list is saved in the local storage of your browser, or online too, if the <code>json-server</code> is running. <br>
+      On startup, the lists from the local storage and the online database are merged. <br>
     </p>
   </section>
   <div class="flexwrap">
@@ -269,12 +270,10 @@
       //     createList();
       //     showAndStoreExistingItems();
       //   });
-      await getAllTodos()
-      // setTimeout(() => {
 
+      await getAllTodos()
       createList();
       showAndStoreExistingItems();
-      // }, 500);
     });
 
 
@@ -296,11 +295,6 @@
         toDoItems.forEach(function (item) {
           newItemToDOM(item.id, item.text, item.done)
         });
-        // for (let item of toDoItems) {
-        // console.log(item);
-        // setTimeout(() => {
-        // newItemToDOM(toDoItems[item].id, toDoItems[item].text, toDoItems[item].done)
-        // }, 2200);
       } else if (state === 'undone') {
         toDoItems.forEach(function (item) {
           if (item.done === false) {
@@ -351,8 +345,7 @@
       const label = document.createElement('label');
       label.title = "double click to edit";
       label.textContent = todoText;
-
-
+      // create eventlistener for label
       label.addEventListener('dblclick', async function (e) {
         const id = e.target.parentElement.id;
         e.target.contentEditable = true;
@@ -361,7 +354,7 @@
         if (window.getSelection) {window.getSelection().removeAllRanges();}
         else if (document.selection) {document.selection.empty();}
       });
-
+      // create eventlistener for label
       label.addEventListener('blur', async function (e) {
         const id = e.target.parentElement.id;
         e.target.contentEditable = false;
@@ -380,19 +373,20 @@
           e.target.classList.remove('success');
         }, 2000);
       });
-
+      // create eventlistener for label
       label.addEventListener('keypress', async function (e) {
         if (e.key === 'Enter') {
           e.target.blur();
         }
       });
 
+
+      // create span element for remove button
       const span = document.createElement('span');
       span.textContent = '❌';
       span.classList = 'removeItem';
       span.title = 'remove ToDo Item';
-
-
+      // add eventlistener to remove button
       span.addEventListener('click', async function (e) {
         console.log(e.target.parentElement.id);
         const id = e.target.parentElement.id;
@@ -406,13 +400,12 @@
       });
 
 
-
-
-
+      // create checkbox element
       const ckb = document.createElement('input');
       ckb.type = 'checkbox';
       ckb.checked = done;
       ckb.classList = 'slider';
+      // add eventlistener to checkbox
       ckb.addEventListener('change', async function (e) {
         const id = e.target.parentElement.id;
         const index = toDoItems.findIndex(function (item) {
@@ -426,13 +419,18 @@
         }
         await updateItemOnServer(id, data)
       });
+
+
       // concat checkbox and label
       // label.insertBefore(ckb, label.firstChild);
       li.appendChild(ckb);
       li.appendChild(label);
       li.appendChild(span);
       todoList.appendChild(li);
-    }
+    } // end newItemToDOM
+
+
+
 
     //  
     // handle the submit event
@@ -449,8 +447,8 @@
         // add new ToDo Item to List
         newItemToDOM(todoID, todoText)
 
+        // add success class to new ToDo Item
         let newItemLable = document.getElementById(todoID).querySelector('label');
-
         newItemLable.classList.add('success');
         setTimeout(function () {
           newItemLable.classList.remove('success');
@@ -478,7 +476,7 @@
         };
         toDoItems.push(newItem);
         await saveNewItemOnServer(newItem);
-        console.log(toDoItems);
+        // console.log(toDoItems);
         showAndStoreExistingItems()
       }
       // handle empty input field
@@ -584,7 +582,7 @@
       let localIdx = 0;
 
 
-
+      // loop through serverItems to find duplicates
       serverItems.forEach(serverItem => {
         let localDup = localItems.find(localItem => localItem.id === serverItem.id);
 
@@ -608,9 +606,7 @@
       });
 
 
-      // 
       // loop through localItems to find new items
-      //
       localItems.forEach(localItem => {
         let serverItem = serverItems.find(serverItem => serverItem.id === localItem.id);
         if (!serverItem) {
@@ -626,8 +622,6 @@
           saveNewItemOnServer(data)
         }
       });
-
-
 
       return merged;
     }
@@ -732,8 +726,6 @@
 
 
 
-
-
     //
     // DEBUG show existing items &&
     // save existing items to localStorage
@@ -756,9 +748,6 @@
 
 
   </script>
-
-
-  <div class="spacer"></div>
   <footer>
     <p>
       <a target="_blank" class="sourceCode" href="https://github.com/KoljaL/cooding-bootcamps-eu/blob/master/docs/todo.html">Source Code on GitHub</a>

@@ -196,6 +196,7 @@ styleMenu.innerHTML = /*CSS*/ `
   line-height:1;
   margin:0;
   position: relative;
+  display:block;
 }
 
 .menu li:last-of-type{
