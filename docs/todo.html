@@ -92,10 +92,10 @@
     }
 
     section.debug {
-      position: absolute;
+      /* position: absolute;
       top: 2rem;
-      right: 3rem;
-      display: none;
+      right: 3rem; */
+      /* display: none; */
     }
 
     .header__message {
@@ -144,6 +144,16 @@
       border: 1px solid var(--primary);
       outline: none;
     }
+
+    .flexwrap {
+      display: flex;
+      flex-direction: row;
+      gap: 1rem;
+    }
+
+    .flexwrap .right {
+      margin-left: 5rem;
+    }
   </style>
 </head>
 
@@ -167,47 +177,67 @@
       The list is saved in the local storage of your browser, or online too, if the <code>json-server</code> is running. <br>
     </p>
   </section>
+  <div class="flexwrap">
+    <div class="left">
+      <section class="addItem">
+        <h2>Add ToDo Item</h2>
+        <form>
+          <input class="newItem" type="text" placeholder="Add ToDo Item" />
+          <button class="addNewItemButton" type="submit">Add</button>
+        </form>
+        <p class="message"></p>
+      </section>
 
-  <section class="addItem">
-    <h2>Add ToDo Item</h2>
-    <form>
-      <input class="newItem" type="text" placeholder="Add ToDo Item" />
-      <button class="addNewItemButton" type="submit">Add</button>
-    </form>
-    <p class="message"></p>
-  </section>
+      <section class="showList">
+        <h2>ToDo List</h2>
 
-  <section class="showList">
-    <h2>ToDo List</h2>
+        <p>
+          <select class="filterItems">
+            <option value="all">All</option>
+            <option value="undone">Undone</option>
+            <option value="done">Done</option>
+          </select>
+        </p>
+        <ul class="todoList"></ul>
+      </section>
 
-    <p>
-      <select class="filterItems">
-        <option value="all">All</option>
-        <option value="undone">Undone</option>
-        <option value="done">Done</option>
-      </select>
+    </div>
+    <div class="right">
+      <section class="debug">
+        <h2>Debug</h2>
 
-    </p>
-    <ul class="todoList"></ul>
-  </section>
+        <details>
+          <summary>ToDoItems</summary>
+          <pre>
+            <code class="debug items"></code>
+          </pre>
+        </details>
 
-  <section class="debug">
-    <h2>Debug</h2>
-    <button class="debugItems">show Items</button>
-    <pre>
-      <code id="debug"></code>
-    </pre>
-  </section>
+        <details>
+          <summary>localStorage</summary>
+          <p>
+            <button class="removeFromLocalStorage">remove from localStorage</button>
+          </p>
+          <pre>
+            <code class="debug localstorage"></code>
+          </pre>
+        </details>
+
+      </section>
+    </div>
+  </div>
+
 
   <script>
     //  define variables for DOM elements
     const form = document.querySelector('form');
     const addNewItemButton = document.querySelector('.addNewItemButton');
     const input = document.querySelector('input');
+    const removeFromLocalStorage = document.querySelector('.removeFromLocalStorage');
     const message = document.querySelector('.message');
     const todoList = document.querySelector('.todoList');
-    const debug = document.querySelector('#debug');
-    const debugItems = document.querySelector('.debugItems');
+    const debugItems = document.querySelector('.debug.items');
+    const debugLocalStorage = document.querySelector('.debug.localstorage');
     const filterItems = document.querySelector('.filterItems');
     const headerMessageSuccess = document.querySelector('.header__message--success');
     const headerMessageError = document.querySelector('.header__message--error');
@@ -240,8 +270,11 @@
       //     showAndStoreExistingItems();
       //   });
       await getAllTodos()
+      // setTimeout(() => {
+
       createList();
       showAndStoreExistingItems();
+      // }, 500);
     });
 
 
@@ -249,7 +282,10 @@
       createList(filterItems.value);
     });
 
-
+    removeFromLocalStorage.addEventListener('click', () => {
+      localStorage.removeItem('toDoItems');
+      location.reload();
+    });
 
     //
     // create ToDo list from array, mint the state
@@ -283,7 +319,7 @@
 
 
     // 
-    // check for duplicates on keyup
+    // check for duplicate items on keyup
     //
     input.addEventListener('keyup', () => {
       toDoItems.forEach(item => {
@@ -291,13 +327,10 @@
           addNewItemButton.disabled = true;
           input.classList.add('fail');
           message.textContent = 'ToDo Item already exists';
-          // setTimeout(function () {
-
-          // }, 2000);
         } else {
-          message.textContent = '';
-          input.classList.remove('fail');
           addNewItemButton.disabled = false;
+          input.classList.remove('fail');
+          message.textContent = '';
         }
       });
     });
@@ -310,10 +343,15 @@
     // add new ToDo Item to DOM
     //
     function newItemToDOM(todoID, todoText, done = false) {
+      // create list element
       const li = document.createElement('li');
       li.id = todoID;
+
+      // create label element
       const label = document.createElement('label');
+      label.title = "double click to edit";
       label.textContent = todoText;
+
 
       label.addEventListener('dblclick', async function (e) {
         const id = e.target.parentElement.id;
@@ -352,6 +390,7 @@
       const span = document.createElement('span');
       span.textContent = '❌';
       span.classList = 'removeItem';
+      span.title = 'remove ToDo Item';
 
 
       span.addEventListener('click', async function (e) {
@@ -368,7 +407,6 @@
 
 
 
-      // https://www.tutorialspoint.com/how-to-stop-refreshing-the-page-on-submit-in-javascript
 
 
       const ckb = document.createElement('input');
@@ -470,36 +508,34 @@
     // or from localStorage if server is not available
 
     async function getAllTodos() {
+      let sourceState = 0;
 
+      //
       // get ToDo Items from server
       try {
         const response = await fetch(API);
-        toDoItems = await response.json();
-        console.log(toDoItems);
-        // setTimeout(() => { // a test to slow down the connection
-        headerMessageSuccess.textContent = 'ToDo Items loaded from server';
-        // }, 1000);
+        serverToDoItems = await response.json();
+        if (serverToDoItems.length > 0) {
+          sourceState = 1;
+          console.log('items from server', serverToDoItems);
+        }
       } catch (error) {
         console.info(error);
-        headerMessageError.textContent = 'Network Error';
+        headerMessageError.textContent = 'no connection to server';
       }
+
+      //
       // get ToDo Items from localStorage
-      if (localStorage.getItem('todo')) {
-        localStorageToDoItems = JSON.parse(localStorage.getItem('todo'));
-        // headerMessageSuccess.textContent = 'ToDo Items loaded from localStorage';
+      if (localStorage.getItem('toDoItems')) {
+        localStorageToDoItems = JSON.parse(localStorage.getItem('toDoItems'));
+        console.log('items from localStorage', localStorageToDoItems);
+        sourceState = sourceState + 2;
       }
-      // else {
-      //   headerMessageError.textContent = 'ToDo Items could not be loaded';
-      // }
-      // if server is not available use localStorage
-      if (!toDoItems) {
-        toDoItems = localStorageToDoItems;
-      }
-      //  if server and localStorage are available merge them
-      else if (localStorageToDoItems) {
-        toDoItems = mergeToDoItems(toDoItems, localStorageToDoItems);
-      }
-      else {
+
+      // if server is not available and localStorage is empty
+      if (sourceState === 0) {
+        console.log('server is available and localStorage is empty');
+        headerMessageSuccess.textContent = 'No ToDo Items loaded';
         toDoItems = [
           {
             id: getID(),
@@ -510,35 +546,90 @@
           }
         ];
       }
-    }
 
+
+      // if server is available and localStorage not
+      if (sourceState === 1) {
+        console.log('server is not available localStorage is used');
+        headerMessageSuccess.textContent = 'ToDo Items loaded from the server';
+        toDoItems = serverToDoItems;
+      }
+
+
+      // if server is not available but localStorage
+      if (sourceState === 2) {
+        console.log('server is not available localStorage is used');
+        headerMessageSuccess.textContent = 'ToDo Items loaded from localStorage';
+        toDoItems = localStorageToDoItems;
+      }
+
+
+      //  if server and localStorage are available merge them
+      if (sourceState === 3) {
+        console.log('server and localStorage are available merge Items');
+        headerMessageSuccess.textContent = 'ToDo Items merged from server and localStorage';
+        toDoItems = mergeToDoItems(serverToDoItems, localStorageToDoItems);
+      }
+    } // getAllTodos
+
+
+    //
     // merge ToDo Items from server and localStorage
-    // take the most recent one
-    // TODO upload to server
-    function mergeToDoItems(serverToDoItems, localStorageToDoItems) {
-      let mergedToDoItems = [];
-      let serverToDoItemsLength = serverToDoItems.length;
-      let localStorageToDoItemsLength = localStorageToDoItems.length;
-      let serverToDoItemsIndex = 0;
-      let localStorageToDoItemsIndex = 0;
-      while (serverToDoItemsIndex < serverToDoItemsLength && localStorageToDoItemsIndex < localStorageToDoItemsLength) {
-        if (serverToDoItems[serverToDoItemsIndex].date_modified > localStorageToDoItems[localStorageToDoItemsIndex].date_modified) {
-          mergedToDoItems.push(serverToDoItems[serverToDoItemsIndex]);
-          serverToDoItemsIndex++;
+    //
+    function mergeToDoItems(serverItems, localItems) {
+      let merged = [];
+      let serverLength = serverItems.length;
+      let localLength = localItems.length;
+      let serverIdx = 0;
+      let localIdx = 0;
+
+
+
+      serverItems.forEach(serverItem => {
+        let localDup = localItems.find(localItem => localItem.id === serverItem.id);
+
+        if (localDup) {
+          console.log('localDup: ', localDup.text)
+          if (serverItem.date_modified > localDup.date_modified) {
+            merged.push(serverItem);
+          } else {
+            merged.push(localDup);
+            // update server
+            let data = {
+              text: localDup.text,
+              done: localDup.done,
+              date_modified: localDup.date_modified
+            }
+            updateItemOnServer(localDup.id, data)
+          }
         } else {
-          mergedToDoItems.push(localStorageToDoItems[localStorageToDoItemsIndex]);
-          localStorageToDoItemsIndex++;
+          merged.push(serverItem);
         }
-      }
-      while (serverToDoItemsIndex < serverToDoItemsLength) {
-        mergedToDoItems.push(serverToDoItems[serverToDoItemsIndex]);
-        serverToDoItemsIndex++;
-      }
-      while (localStorageToDoItemsIndex < localStorageToDoItemsLength) {
-        mergedToDoItems.push(localStorageToDoItems[localStorageToDoItemsIndex]);
-        localStorageToDoItemsIndex++;
-      }
-      return mergedToDoItems;
+      });
+
+
+      // 
+      // loop through localItems to find new items
+      //
+      localItems.forEach(localItem => {
+        let serverItem = serverItems.find(serverItem => serverItem.id === localItem.id);
+        if (!serverItem) {
+          console.log('2 localItem: ', localItem.text)
+          merged.push(localItem);
+          // save on server
+          let data = {
+            text: localItem.text,
+            done: localItem.done,
+            date_created: localItem.date_created,
+            date_modified: localItem.date_modified
+          }
+          saveNewItemOnServer(data)
+        }
+      });
+
+
+
+      return merged;
     }
 
 
@@ -640,12 +731,7 @@
     }
 
 
-    //
-    // DEBUG show existing items
-    //
-    debugItems.addEventListener('click', () => {
-      showAndStoreExistingItems();
-    });
+
 
 
     //
@@ -654,11 +740,18 @@
     //
     function showAndStoreExistingItems() {
       let todoString = JSON.stringify(toDoItems, null, 2);
-      // window.localStorage.setItem('todo', todoString);
-      debug.textContent = todoString
+      window.localStorage.setItem('toDoItems', todoString);
+      debugItems.textContent = todoString
+      showLocalStorage()
     }
 
 
+    //
+    // DEBUG show localStorage
+    //
+    function showLocalStorage() {
+      debugLocalStorage.textContent = window.localStorage.getItem('toDoItems');
+    }
 
 
 

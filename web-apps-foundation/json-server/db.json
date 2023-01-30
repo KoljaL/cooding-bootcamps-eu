@@ -1,67 +1,25 @@
 {
   "todos": [
     {
-      "id": "plOeW",
-      "date_created": "2023-01-27T22:43:57.994Z",
-      "date_modified": "2023-01-27T22:54:18.220Z",
-      "text": "eredewedewdfrfe",
-      "done": true
-    },
-    {
       "id": "udGZJ",
       "date_created": "2023-01-27T22:43:59.881Z",
       "date_modified": "2023-01-27T23:43:47.778Z",
-      "text": "ferferfe",
+      "text": "First Item From Server",
       "done": true
     },
     {
-      "id": "pUCTh",
-      "date_created": "2023-01-27T22:44:01.392Z",
-      "date_modified": "2023-01-27T23:48:14.106Z",
-      "text": "erferf",
+      "id": "7Qb0l",
+      "date_created": "2023-01-30T09:51:56.049Z",
+      "date_modified": "2023-01-30T09:51:56.049Z",
+      "text": "new Item",
       "done": false
     },
     {
-      "id": "h4mHb",
-      "date_created": "2023-01-28T00:08:40.142Z",
-      "date_modified": "2023-01-28T00:08:40.142Z",
-      "text": "wdede",
-      "done": false
-    },
-    {
-      "id": "A6QPU",
-      "date_created": "2023-01-28T00:10:10.077Z",
-      "date_modified": "2023-01-28T00:10:10.077Z",
-      "text": "ewde",
-      "done": false
-    },
-    {
-      "id": "npAGC",
-      "date_created": "2023-01-28T00:10:13.513Z",
-      "date_modified": "2023-01-28T00:10:13.513Z",
-      "text": "edwede",
-      "done": false
-    },
-    {
-      "id": "95yIg",
-      "date_created": "2023-01-28T00:12:33.871Z",
-      "date_modified": "2023-01-28T00:12:33.871Z",
-      "text": "ewdedeewdw",
-      "done": false
-    },
-    {
-      "id": "8Lbuf",
-      "date_created": "2023-01-28T00:12:45.563Z",
-      "date_modified": "2023-01-28T00:12:45.563Z",
-      "text": "wede",
-      "done": false
-    },
-    {
-      "id": "QNFCP",
-      "date_created": "2023-01-28T00:12:52.247Z",
-      "date_modified": "2023-01-28T00:12:52.247Z",
-      "text": "wededwe",
-      "done": false
+      "text": "syc from local",
+      "done": false,
+      "date_created": "2023-01-30T09:52:23.855Z",
+      "date_modified": "2023-01-30T09:52:23.855Z",
+      "id": "kl9rK4x"
     }
   ]
 }
