@@ -306,7 +306,6 @@
         <div class="contactCard__connections">
           <span class="contactCard__connections_icon">
             <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 256 200">
-              <rect x="0" y="0" width="256" height="256" fill="none" stroke="none" />
               <g transform="rotate(45 128 128)">
                 <path fill="currentColor" d="m212.9 122.3l-30.3 30.3a56 56 0 0 1-79.2 0a12 12 0 1 1 16.9-16.9a32.2 32.2 0 0 0 45.3 0l30.3-30.3a32 32 0 0 0-45.3-45.3l-9.6 9.7a12 12 0 0 1-17-17l9.7-9.7a56 56 0 1 1 79.2 79.2ZM115 186.2l-9.6 9.7a32 32 0 0 1-45.3-45.3l30.3-30.3a32.2 32.2 0 0 1 45.3 0a12 12 0 0 0 16.9-16.9a55.9 55.9 0 0 0-79.2 0l-30.3 30.3a56 56 0 0 0 79.2 79.2l9.7-9.7a12 12 0 0 0-17-17Z" />
               </g>
@@ -327,13 +326,14 @@
     const pendingButton = document.querySelector('.pendingInvitations__manage');
     const pendingInvitation = document.querySelector('.pendingInvitation');
     const pendingList = document.querySelector('.pendingList');
-
     let pendingInvitationsCount = 0;
 
     fetchContacts(8);
 
 
-
+    seeAll.addEventListener('click', () => {
+      fetchContacts(20);
+    });
 
 
     function fetchContacts(count) {
@@ -346,12 +346,6 @@
 
 
     function createContactCard(contact) {
-      const clone = contactCard.cloneNode(true);
-      clone.querySelector('.contactCard__img').src = contact.picture;
-      clone.querySelector('.contactCard__bg_img').src = contact.backgroundImage;
-      clone.querySelector('.contactCard__name').textContent = contact.name.title + ' ' + contact.name.first + ' ' + contact.name.last;
-      clone.querySelector('.contactCard__title').textContent = contact.title;
-      clone.querySelector('.contactCard__remove').addEventListener('click', removeContactCard);
 
       let mutualConnectionsText = 'no mutual connection';
       if (contact.mutualConnections === 1) {
@@ -359,8 +353,14 @@
       } else {
         mutualConnectionsText = contact.mutualConnections + ' mutual connections';
       }
-      clone.querySelector('.contactCard__connections_count').textContent = mutualConnectionsText;
 
+      const clone = contactCard.cloneNode(true);
+      clone.querySelector('.contactCard__img').src = contact.picture;
+      clone.querySelector('.contactCard__bg_img').src = contact.backgroundImage;
+      clone.querySelector('.contactCard__name').textContent = contact.name.title + ' ' + contact.name.first + ' ' + contact.name.last;
+      clone.querySelector('.contactCard__title').textContent = contact.title;
+      clone.querySelector('.contactCard__remove').addEventListener('click', removeContactCard);
+      clone.querySelector('.contactCard__connections_count').textContent = mutualConnectionsText;
       clone.querySelector('.contactCard__connect_button').addEventListener('click', managePendingInvitations);
       return clone;
     }
@@ -375,15 +375,48 @@
       let clone = thiscard.cloneNode(true);
       let width = getComputedStyle(thiscard).width;
       console.log(width);
+      clone.querySelector('.contactCard__connect_button').addEventListener('click', stopPendingInvitation);
+
       clone.style.width = width;
+      clone.querySelector('.contactCard__remove').remove();
+      clone.classList.add('hide');
+      setTimeout(() => {
+        clone.classList.remove('hide');
+      }, 10);
       pendingList.appendChild(clone);
       this.closest('.contactCard').remove();
 
       fetchContacts(1);
     }
 
+    function stopPendingInvitation() {
+      pendingInvitationsCount--;
+      let s = (pendingInvitationsCount > 1) ? 's' : '';
+      pendingInvitation.textContent = pendingInvitationsCount + ' pending Invitiation' + s;
+
+      this.textContent = 'Connect';
+
+      let thiscard = this.closest('.contactCard');
+      let clone = thiscard.cloneNode(true);
+
+      clone.querySelector('.contactCard__connect_button').addEventListener('click', managePendingInvitations);
+
+      clone.style.width = '';
+      let removeButton = document.createElement('button');
+      removeButton.classList.add('contactCard__remove');
+      removeButton.textContent = 'Remove';
+      removeButton.addEventListener('click', removeContactCard);
+      clone.appendChild(removeButton);
+      // clone.querySelector('.contactCard__remove').remove();
+      clone.classList.add('hide');
+      setTimeout(() => {
+        clone.classList.remove('hide');
+      }, 10);
+      contactList.appendChild(clone);
+      this.closest('.contactCard').remove();
+    }
+
     function renderContacts(contacts) {
-      // contactList.innerHTML = '';
       for (const contact of contacts) {
         if (contact.backgroundImage === '') {
           contact.backgroundImage = './img/bg-image.jpg';
@@ -398,9 +431,7 @@
     }
 
 
-    seeAll.addEventListener('click', () => {
-      fetchContacts(20);
-    });
+
 
     function removeContactCard() {
       this.closest('.contactCard').remove();
@@ -409,100 +440,6 @@
 
 
 
-
-
-    async function fetchContactsFAKE() {
-      return [
-        {
-          "name": {
-            "title": "Mr",
-            "first": "Santiago",
-            "last": "Ruiz"
-          },
-          "title": "Developer",
-          "picture": "https://randomuser.me/api/portraits/men/4.jpg",
-          "mutualConnections": 6,
-          "backgroundImage": "https://source.unsplash.com/random/300×300"
-        },
-        {
-          "name": {
-            "title": "Mr",
-            "first": "Gerfried",
-            "last": "Schmalz"
-          },
-          "title": "CFO",
-          "picture": "https://randomuser.me/api/portraits/men/66.jpg",
-          "mutualConnections": 0,
-          "backgroundImage": ""
-        },
-        {
-          "name": {
-            "title": "Mrs",
-            "first": "Ayse",
-            "last": "Hak"
-          },
-          "title": "Trainer",
-          "picture": "https://randomuser.me/api/portraits/women/39.jpg",
-          "mutualConnections": 1,
-          "backgroundImage": "https://source.unsplash.com/random/300×300"
-        },
-        {
-          "name": {
-            "title": "Mr",
-            "first": "Tracy",
-            "last": "Holt"
-          },
-          "title": "Junior Developer",
-          "picture": "https://randomuser.me/api/portraits/men/4.jpg",
-          "mutualConnections": 4,
-          "backgroundImage": "https://source.unsplash.com/random/300×300"
-        },
-        {
-          "name": {
-            "title": "Mr",
-            "first": "Julián",
-            "last": "Ramírez"
-          },
-          "title": "Junior Developer",
-          "picture": "https://randomuser.me/api/portraits/men/47.jpg",
-          "mutualConnections": 2,
-          "backgroundImage": "https://source.unsplash.com/random/300×300"
-        },
-        {
-          "name": {
-            "title": "Mr",
-            "first": "Christiano",
-            "last": "Hilkens"
-          },
-          "title": "CEO",
-          "picture": "https://randomuser.me/api/portraits/men/6.jpg",
-          "mutualConnections": 2,
-          "backgroundImage": ""
-        },
-        {
-          "name": {
-            "title": "Ms",
-            "first": "Veronique",
-            "last": "Fett"
-          },
-          "title": "CFO",
-          "picture": "https://randomuser.me/api/portraits/women/34.jpg",
-          "mutualConnections": 8,
-          "backgroundImage": "https://source.unsplash.com/random/300×300"
-        },
-        {
-          "name": {
-            "title": "Mr",
-            "first": "Pat",
-            "last": "Pearson"
-          },
-          "title": "Manager",
-          "picture": "https://randomuser.me/api/portraits/men/46.jpg",
-          "mutualConnections": 8,
-          "backgroundImage": "https://source.unsplash.com/random/300×300"
-        }
-      ];
-    }
   </script>
   <script src="./js/menu.js"></script>
   <script src="./js/toggleTheme.js"></script>
