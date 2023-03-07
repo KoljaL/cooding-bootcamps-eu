@@ -1,0 +1,360 @@
+<!DOCTYPE html>
+<html lang="en" data-theme="dark">
+
+<head>
+  <meta charset="UTF-8">
+  <meta http-equiv="X-UA-Compatible" content="IE=edge">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <link href="img/favicon-dark.png" rel="icon" />
+  <title>LinkedIn Contacts</title>
+
+  <script>
+    document.documentElement.setAttribute('data-theme', window.matchMedia('(prefers-color-scheme: dark)').matches ? 'dark' : 'light')
+  </script>
+  <link rel="stylesheet" href="./css/almostclassless.css">
+  <link rel="stylesheet" href="./css/layout.css">
+
+  <style>
+    .contactList {
+      display: grid;
+      grid-template-columns: repeat(auto-fit, minmax(200px, 1fr));
+      grid-gap: 1rem;
+      padding: 1rem;
+    }
+
+    .contactCard {
+      background-color: var(--color-bg);
+      border: 1px solid var(--primary-lighter);
+      border-radius: 0.5rem;
+      box-shadow: 0 0 0.5rem 0.5rem var(--color-bg);
+      overflow: hidden;
+      position: relative;
+    }
+
+    .contactCard__bg_img {
+      position: absolute;
+      top: 0;
+      left: 0;
+      width: 100%;
+      height: 70px;
+      object-fit: cover;
+      z-index: -1;
+      border: 0;
+    }
+
+    .contactCard__remove {
+      position: absolute;
+      top: .5rem;
+      right: .5rem;
+      width: 2rem;
+      height: 2rem;
+      background-color: hsla(0, 0%, 0%, 0.6);
+      color: var(--secondary-dark);
+      font-size: 1rem;
+      font-weight: 700;
+      display: flex;
+      justify-content: center;
+      align-items: center;
+      border-radius: 50%;
+      cursor: pointer;
+      transition: all 0.2s ease-in-out;
+    }
+
+    .contactCard__remove:hover {
+      background-color: hsla(0, 0%, 0%, 0.9);
+      color: var(--secondary);
+    }
+
+    .contactCard__remove svg {
+      width: 1.5rem;
+      height: 1.5rem;
+    }
+
+    .contactCard__content {
+      padding: 1rem;
+      display: flex;
+      flex-direction: column;
+      align-items: center;
+    }
+
+    .contactCard__img {
+      width: 100px;
+      height: 100px;
+      border-radius: 50%;
+      object-fit: cover;
+    }
+
+    .contactCard__name {
+      margin: 0;
+      margin-top: .5rem;
+      font-size: 1.1rem;
+      color: var(--secondary);
+    }
+
+    .contactCard__title {
+      margin: 0;
+      font-size: 0.9rem;
+      line-height: 1;
+      color: var(--secondary-dark);
+    }
+
+
+
+    .contactCard__connections {
+      color: var(--secondary-dark);
+      margin: 1rem 0;
+    }
+
+    .contactCard__connections_icon {
+      display: inline-block;
+      width: 1rem;
+      height: 1rem;
+      margin: 0;
+      fill: red;
+      font-size: 0.8rem;
+      font-weight: 400;
+      text-align: center;
+    }
+
+    .contactCard__connections_count {
+      display: inline-block;
+      margin: 0;
+      font-size: 0.8rem;
+      font-weight: 400;
+      text-align: center;
+    }
+
+    .contactCard__connect_button {
+      margin: 0;
+      width: 100%;
+      font-size: 1rem;
+      color: var(--primary);
+      font-weight: 700;
+      background-color: transparent;
+      border: 1px solid var(--primary);
+      border-radius: 25px;
+      min-height: 2.2rem;
+      transition: all 0.2s ease-in-out;
+    }
+
+    .contactCard__connect_button:hover {
+      color: var(--secondary-bg) !important;
+      background-color: var(--primary) !important;
+      border: 1px solid var(--primary-light) !important;
+    }
+  </style>
+</head>
+
+
+<body>
+  <header>
+    <h1>LinkedIn Contacts</h1>
+    <span class="icons">
+      <label class="theme-toggle" title="Toggle theme"></label>
+    </span>
+  </header>
+  <div class="spacer"></div>
+
+  <div class="contactList"></div>
+
+
+
+  <div class="spacer"></div>
+  <footer>
+    <p>
+      <a target="_blank" class="sourceCode" href="https://github.com/KoljaL/cooding-bootcamps-eu/tree/master/docs">Repo on GitHub</a>
+    </p>
+  </footer>
+
+  <template id="contactCard">
+    <div class="contactCard">
+      <img class="contactCard__bg_img" src="" alt="">
+      <span class="contactCard__remove">
+        <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 16 16">
+          <g transform="rotate(90 8 8)">
+            <path fill="none" stroke="currentColor" stroke-linecap="round" stroke-linejoin="round" stroke-width="1.5" d="m11.25 4.75l-6.5 6.5m0-6.5l6.5 6.5" />
+          </g>
+        </svg>
+      </span>
+      <div class="contactCard__content">
+        <img class="contactCard__img" src="" alt="">
+        <h3 class="contactCard__name"></h3>
+        <p class="contactCard__title"></p>
+        <div class="contactCard__connections">
+          <span class="contactCard__connections_icon">
+            <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 256 200">
+              <rect x="0" y="0" width="256" height="256" fill="none" stroke="none" />
+              <g transform="rotate(45 128 128)">
+                <path fill="currentColor" d="m212.9 122.3l-30.3 30.3a56 56 0 0 1-79.2 0a12 12 0 1 1 16.9-16.9a32.2 32.2 0 0 0 45.3 0l30.3-30.3a32 32 0 0 0-45.3-45.3l-9.6 9.7a12 12 0 0 1-17-17l9.7-9.7a56 56 0 1 1 79.2 79.2ZM115 186.2l-9.6 9.7a32 32 0 0 1-45.3-45.3l30.3-30.3a32.2 32.2 0 0 1 45.3 0a12 12 0 0 0 16.9-16.9a55.9 55.9 0 0 0-79.2 0l-30.3 30.3a56 56 0 0 0 79.2 79.2l9.7-9.7a12 12 0 0 0-17-17Z" />
+              </g>
+            </svg>
+          </span>
+          <span class="contactCard__connections_count"></span>
+        </div>
+        <button class="contactCard__connect_button">Connect</button>
+      </div>
+    </div>
+  </template>
+
+  <script>
+    contactCard = document.querySelector('#contactCard').content;
+
+
+
+
+    function createContactCard(contact) {
+      const clone = contactCard.cloneNode(true);
+      clone.querySelector('.contactCard__img').src = contact.picture;
+      clone.querySelector('.contactCard__bg_img').src = contact.backgroundImage;
+      clone.querySelector('.contactCard__name').textContent = contact.name.title + ' ' + contact.name.first + ' ' + contact.name.last;
+      clone.querySelector('.contactCard__title').textContent = contact.title;
+
+      let mutualConnectionsText = 'no mutual connection';
+      if (contact.mutualConnections === 1) {
+        mutualConnectionsText = '1 mutual connection';
+      } else {
+        mutualConnectionsText = contact.mutualConnections + ' mutual connections';
+      }
+
+
+      clone.querySelector('.contactCard__connections_count').textContent = mutualConnectionsText;
+
+      return clone;
+    }
+
+    function renderContacts(contacts) {
+      const contactList = document.querySelector('.contactList');
+      contactList.innerHTML = '';
+      for (const contact of contacts) {
+        if (contact.backgroundImage === '') {
+          contact.backgroundImage = './img/bg-image.jpg';
+        }
+        contactList.appendChild(createContactCard(contact));
+      };
+    }
+
+    function fetchContacts() {
+      return fetch('https://dummy-apis.netlify.app/api/contact-suggestions?count=8')
+        .then(response => response.json())
+        .catch(error => console.error(error));
+    }
+
+    function init() {
+      fetchContacts()
+        .then(contacts => () => {
+          contacts.forEach(contact => {
+            console.log(contact);
+            renderContacts(contact)
+          });
+        });
+    }
+
+    // init(); 
+    let c = fetchContactsFAKE();
+    // let c = fetchContacts();
+    c.then(contacts => {
+      console.log(contacts);
+      renderContacts(contacts)
+
+    });
+
+
+    async function fetchContactsFAKE() {
+      return [
+        {
+          "name": {
+            "title": "Mr",
+            "first": "Santiago",
+            "last": "Ruiz"
+          },
+          "title": "Developer",
+          "picture": "https://randomuser.me/api/portraits/men/4.jpg",
+          "mutualConnections": 6,
+          "backgroundImage": "https://source.unsplash.com/random/300×300"
+        },
+        {
+          "name": {
+            "title": "Mr",
+            "first": "Gerfried",
+            "last": "Schmalz"
+          },
+          "title": "CFO",
+          "picture": "https://randomuser.me/api/portraits/men/66.jpg",
+          "mutualConnections": 0,
+          "backgroundImage": ""
+        },
+        {
+          "name": {
+            "title": "Mrs",
+            "first": "Ayse",
+            "last": "Hak"
+          },
+          "title": "Trainer",
+          "picture": "https://randomuser.me/api/portraits/women/39.jpg",
+          "mutualConnections": 1,
+          "backgroundImage": "https://source.unsplash.com/random/300×300"
+        },
+        {
+          "name": {
+            "title": "Mr",
+            "first": "Tracy",
+            "last": "Holt"
+          },
+          "title": "Junior Developer",
+          "picture": "https://randomuser.me/api/portraits/men/4.jpg",
+          "mutualConnections": 4,
+          "backgroundImage": "https://source.unsplash.com/random/300×300"
+        },
+        {
+          "name": {
+            "title": "Mr",
+            "first": "Julián",
+            "last": "Ramírez"
+          },
+          "title": "Junior Developer",
+          "picture": "https://randomuser.me/api/portraits/men/47.jpg",
+          "mutualConnections": 2,
+          "backgroundImage": "https://source.unsplash.com/random/300×300"
+        },
+        {
+          "name": {
+            "title": "Mr",
+            "first": "Christiano",
+            "last": "Hilkens"
+          },
+          "title": "CEO",
+          "picture": "https://randomuser.me/api/portraits/men/6.jpg",
+          "mutualConnections": 2,
+          "backgroundImage": ""
+        },
+        {
+          "name": {
+            "title": "Ms",
+            "first": "Veronique",
+            "last": "Fett"
+          },
+          "title": "CFO",
+          "picture": "https://randomuser.me/api/portraits/women/34.jpg",
+          "mutualConnections": 8,
+          "backgroundImage": "https://source.unsplash.com/random/300×300"
+        },
+        {
+          "name": {
+            "title": "Mr",
+            "first": "Pat",
+            "last": "Pearson"
+          },
+          "title": "Manager",
+          "picture": "https://randomuser.me/api/portraits/men/46.jpg",
+          "mutualConnections": 8,
+          "backgroundImage": "https://source.unsplash.com/random/300×300"
+        }
+      ];
+    }
+  </script>
+  <script src="./js/menu.js"></script>
+  <script src="./js/toggleTheme.js"></script>
+
+</body>
+
+</html>

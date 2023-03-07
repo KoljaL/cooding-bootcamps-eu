@@ -184,14 +184,13 @@
         <h2>Add ToDo Item</h2>
         <form>
           <input class="newItem" type="text" placeholder="Add ToDo Item" />
-          <button class="addNewItemButton" type="submit">Add</button>
+          <button class="addNewItemButton" disabled type="submit">Add</button>
         </form>
         <p class="message"></p>
       </section>
 
       <section class="showList">
         <h2>ToDo List</h2>
-
         <p>
           <select class="filterItems">
             <option value="all">All</option>
@@ -243,10 +242,12 @@
     const headerMessageSuccess = document.querySelector('.header__message--success');
     const headerMessageError = document.querySelector('.header__message--error');
     const API = 'http://localhost:48329/todos';
-    var toDoItems, serverToDoItems, localStorageToDoItems;
+    let toDoItems = [];
+    let serverToDoItems = [];
+    let localStorageToDoItems = [];
+    // addNewItemButton.disabled = true;
 
-    addNewItemButton.disabled = true;
-
+    // console.log('API', serverToDoItems);
 
     // TODO what is the "better" way?
     // fetch(API)
@@ -264,14 +265,7 @@
     // init
     document.addEventListener('DOMContentLoaded', async function () {
       console.info('Init ToDo App')
-      // TODO why does this not work?
-      // await getAllTodos()
-      //   .then(() => {
-      //     createList();
-      //     showAndStoreExistingItems();
-      //   });
-
-      await getAllTodos()
+      await getAllTodos();
       createList();
       showAndStoreExistingItems();
     });
@@ -340,6 +334,8 @@
       // create list element
       const li = document.createElement('li');
       li.id = todoID;
+      li.classList.add('todoItem');
+      li.classList.add(done);
 
       // create label element
       const label = document.createElement('label');
@@ -512,11 +508,11 @@
       // get ToDo Items from server
       try {
         const response = await fetch(API);
-        serverToDoItems = await response.json();
-        if (serverToDoItems.length > 0) {
-          sourceState = 1;
-          console.log('items from server', serverToDoItems);
-        }
+        serverToDoItems = await response.json() ?? [];
+        // if (serverToDoItems.length > 0) {
+        //   sourceState = 1;
+        //   console.log('items from server', serverToDoItems);
+        // }
       } catch (error) {
         console.info(error);
         headerMessageError.textContent = 'no connection to server';
@@ -526,12 +522,12 @@
       // get ToDo Items from localStorage
       if (localStorage.getItem('toDoItems')) {
         localStorageToDoItems = JSON.parse(localStorage.getItem('toDoItems'));
-        console.log('items from localStorage', localStorageToDoItems);
+        console.log('items from localStorage', localStorageToDoItems.length);
         sourceState = sourceState + 2;
       }
 
       // if server is not available and localStorage is empty
-      if (sourceState === 0) {
+      if (sourceState === 0 && localStorageToDoItems.length === 0) {
         console.log('server is available and localStorage is empty');
         headerMessageSuccess.textContent = 'No ToDo Items loaded';
         toDoItems = [
@@ -547,27 +543,28 @@
 
 
       // if server is available and localStorage not
-      if (sourceState === 1) {
+      if (serverToDoItems.length > 0) {
         console.log('server is not available localStorage is used');
         headerMessageSuccess.textContent = 'ToDo Items loaded from the server';
-        toDoItems = serverToDoItems;
+        // toDoItems = serverToDoItems;
       }
 
 
       // if server is not available but localStorage
-      if (sourceState === 2) {
-        console.log('server is not available localStorage is used');
+      if (localStorageToDoItems.length > 0) {
+        console.log('localStorage is used');
         headerMessageSuccess.textContent = 'ToDo Items loaded from localStorage';
-        toDoItems = localStorageToDoItems;
+        // toDoItems = localStorageToDoItems;
       }
+      toDoItems = mergeToDoItems(serverToDoItems, localStorageToDoItems);
 
 
       //  if server and localStorage are available merge them
-      if (sourceState === 3) {
-        console.log('server and localStorage are available merge Items');
-        headerMessageSuccess.textContent = 'ToDo Items merged from server and localStorage';
-        toDoItems = mergeToDoItems(serverToDoItems, localStorageToDoItems);
-      }
+      // if (serverToDoItems.length > 0 && localStorageToDoItems.length > 0) {
+      //   console.log('server and localStorage are available merge Items');
+      //   headerMessageSuccess.textContent = 'ToDo Items merged from server and localStorage';
+      //   toDoItems = mergeToDoItems(serverToDoItems, localStorageToDoItems);
+      // }
     } // getAllTodos
 
 
@@ -578,8 +575,6 @@
       let merged = [];
       let serverLength = serverItems.length;
       let localLength = localItems.length;
-      let serverIdx = 0;
-      let localIdx = 0;
 
 
       // loop through serverItems to find duplicates
@@ -610,6 +605,7 @@
       localItems.forEach(localItem => {
         let serverItem = serverItems.find(serverItem => serverItem.id === localItem.id);
         if (!serverItem) {
+          //TODO  mod date !
           console.log('2 localItem: ', localItem.text)
           merged.push(localItem);
           // save on server

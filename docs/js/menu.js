@@ -22,6 +22,12 @@ const menu = [
                 desc: 'An App to add & remove ToDo-Items',
                 link: 'https://github.com/KoljaL/cooding-bootcamps-eu/blob/master/docs/todo.html',
             },
+            {
+                title: 'LinkedIn Contacts',
+                path: './linked-in.html',
+                desc: 'Rebuild of the suggested contacts widget of LinkedIn',
+                link: 'https://github.com/KoljaL/cooding-bootcamps-eu/blob/master/docs/linked-in.html',
+            },
         ],
     },
     {
