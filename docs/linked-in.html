@@ -29,6 +29,8 @@
       box-shadow: 0 0 0.5rem 0.5rem var(--color-bg);
       overflow: hidden;
       position: relative;
+      opacity: 1;
+      transition: opacity 600ms;
     }
 
     .contactCard__bg_img {
@@ -89,6 +91,11 @@
       margin-top: .5rem;
       font-size: 1.1rem;
       color: var(--secondary);
+      white-space: nowrap;
+      text-overflow: ellipsis;
+      overflow: hidden;
+      width: 100%;
+      text-align: center;
     }
 
     .contactCard__title {
@@ -96,9 +103,12 @@
       font-size: 0.9rem;
       line-height: 1;
       color: var(--secondary-dark);
+      white-space: nowrap;
+      text-overflow: ellipsis;
+      overflow: hidden;
+      width: 100%;
+      text-align: center;
     }
-
-
 
     .contactCard__connections {
       color: var(--secondary-dark);
@@ -142,6 +152,12 @@
       background-color: var(--primary) !important;
       border: 1px solid var(--primary-light) !important;
     }
+
+
+
+    .hide {
+      opacity: 0;
+    }
   </style>
 </head>
 
@@ -167,7 +183,7 @@
   </footer>
 
   <template id="contactCard">
-    <div class="contactCard">
+    <div class="contactCard hide">
       <img class="contactCard__bg_img" src="" alt="">
       <span class="contactCard__remove">
         <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 16 16">
@@ -197,8 +213,17 @@
   </template>
 
   <script>
-    contactCard = document.querySelector('#contactCard').content;
+    const contactCard = document.querySelector('#contactCard').content;
+    const contactList = document.querySelector('.contactList');
 
+    fetchContacts(8);
+
+    function fetchContacts(count) {
+      return fetch('https://dummy-apis.netlify.app/api/contact-suggestions?count=' + count)
+        .then(response => response.json())
+        .then(contacts => renderContacts(contacts))
+        .catch(error => console.error(error));
+    }
 
 
 
@@ -208,6 +233,7 @@
       clone.querySelector('.contactCard__bg_img').src = contact.backgroundImage;
       clone.querySelector('.contactCard__name').textContent = contact.name.title + ' ' + contact.name.first + ' ' + contact.name.last;
       clone.querySelector('.contactCard__title').textContent = contact.title;
+      clone.querySelector('.contactCard__remove').addEventListener('click', removeContactCard);
 
       let mutualConnectionsText = 'no mutual connection';
       if (contact.mutualConnections === 1) {
@@ -215,48 +241,36 @@
       } else {
         mutualConnectionsText = contact.mutualConnections + ' mutual connections';
       }
-
-
       clone.querySelector('.contactCard__connections_count').textContent = mutualConnectionsText;
-
       return clone;
     }
 
+
     function renderContacts(contacts) {
-      const contactList = document.querySelector('.contactList');
-      contactList.innerHTML = '';
+      // contactList.innerHTML = '';
       for (const contact of contacts) {
         if (contact.backgroundImage === '') {
           contact.backgroundImage = './img/bg-image.jpg';
         }
         contactList.appendChild(createContactCard(contact));
+        // get last child and remove class hide
+        const lastChild = contactList.lastElementChild;
+        setTimeout(() => {
+          lastChild.classList.remove('hide');
+        }, 10);
       };
     }
 
-    function fetchContacts() {
-      return fetch('https://dummy-apis.netlify.app/api/contact-suggestions?count=8')
-        .then(response => response.json())
-        .catch(error => console.error(error));
+
+
+
+    function removeContactCard() {
+      this.closest('.contactCard').remove();
+      fetchContacts(1);
     }
 
-    function init() {
-      fetchContacts()
-        .then(contacts => () => {
-          contacts.forEach(contact => {
-            console.log(contact);
-            renderContacts(contact)
-          });
-        });
-    }
 
-    // init(); 
-    let c = fetchContactsFAKE();
-    // let c = fetchContacts();
-    c.then(contacts => {
-      console.log(contacts);
-      renderContacts(contacts)
 
-    });
 
 
     async function fetchContactsFAKE() {
