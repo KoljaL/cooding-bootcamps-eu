@@ -15,11 +15,88 @@
   <link rel="stylesheet" href="./css/layout.css">
 
   <style>
+    html,
+    header,
+    body,
+    footer {
+      background-color: var(--secondary-bg1);
+    }
+
+    .pendingInvitations {
+      padding: 1rem;
+      margin: 0;
+      margin-bottom: 1rem;
+      background-color: var(--secondary-bg);
+      border: 1px solid var(--primary-lighter);
+      border-radius: 0.5rem;
+    }
+
+    .pendingInvitations__header {
+      display: flex;
+      align-items: center;
+    }
+
+    .pendingInvitation {
+
+      margin: 0;
+      font-size: 1.3rem;
+      line-height: 1;
+      color: var(--secondary);
+    }
+
+    .pendingInvitations__manage {
+      margin: 0;
+      font-size: 1.1rem !important;
+      color: var(--primary);
+      font-weight: 700;
+      text-decoration: none;
+      transition: all 0.2s ease-in-out;
+    }
+
+    .pendingList {
+      display: flex;
+      grid-gap: 1rem;
+      margin-top: 1rem;
+      flex-wrap: wrap;
+    }
+
+    .pendingList:empty {
+      display: none;
+    }
+
+    .contacts {
+      background-color: var(--secondary-bg);
+      border: 1px solid var(--primary-lighter);
+      border-radius: 0.5rem;
+      padding: 1rem;
+    }
+
+    .contacts__header {
+      display: flex;
+      justify-content: space-between;
+      align-items: center;
+      margin: .5rem .25rem 1rem .25rem;
+    }
+
+    .contacts__title {
+      margin: 0;
+      font-size: 1.3rem;
+      color: var(--secondary);
+    }
+
+    .contacts__seeAll {
+      margin: 0;
+      font-size: 1.1rem !important;
+      color: var(--primary);
+      font-weight: 700;
+      text-decoration: none;
+      transition: all 0.2s ease-in-out;
+    }
+
     .contactList {
       display: grid;
       grid-template-columns: repeat(auto-fit, minmax(200px, 1fr));
       grid-gap: 1rem;
-      padding: 1rem;
     }
 
     .contactCard {
@@ -40,7 +117,7 @@
       width: 100%;
       height: 70px;
       object-fit: cover;
-      z-index: -1;
+      z-index: 0;
       border: 0;
     }
 
@@ -52,8 +129,8 @@
       height: 2rem;
       background-color: hsla(0, 0%, 0%, 0.6);
       color: var(--secondary-dark);
-      font-size: 1rem;
-      font-weight: 700;
+      padding: 0;
+      min-height: 0;
       display: flex;
       justify-content: center;
       align-items: center;
@@ -62,9 +139,21 @@
       transition: all 0.2s ease-in-out;
     }
 
+
+
     .contactCard__remove:hover {
-      background-color: hsla(0, 0%, 0%, 0.9);
+      background-color: hsla(0, 0%, 0%, 0.9) !important;
       color: var(--secondary);
+    }
+
+    [data-theme="light"] .contactCard__remove {
+      background-color: hsla(0, 0%, 0%, 0.3);
+      color: var(--secondary-bg1);
+    }
+
+    [data-theme="light"] .contactCard__remove:hover {
+      background-color: hsla(0, 0%, 0%, 0.5);
+      color: var(--secondary-bg1);
     }
 
     .contactCard__remove svg {
@@ -84,6 +173,7 @@
       height: 100px;
       border-radius: 50%;
       object-fit: cover;
+      z-index: 1;
     }
 
     .contactCard__name {
@@ -171,7 +261,24 @@
   </header>
   <div class="spacer"></div>
 
-  <div class="contactList"></div>
+  <div class="pendingInvitations">
+    <div class="pendingInvitations__header">
+      <div class="pendingInvitation">No pending Invitiations</div>
+      <a href="#" title="See all people you may know" class="pendingInvitations__manage">&nbsp;</a>
+    </div>
+
+    <div class="pendingList"></div>
+
+  </div>
+
+
+  <div class="contacts">
+    <div class="contacts__header">
+      <h2 class="contacts__title">People you may know</h2>
+      <a href="#" title="See all people you may know" class="contacts__seeAll">See all</a>
+    </div>
+    <div class="contactList"></div>
+  </div>
 
 
 
@@ -185,13 +292,13 @@
   <template id="contactCard">
     <div class="contactCard hide">
       <img class="contactCard__bg_img" src="" alt="">
-      <span class="contactCard__remove">
+      <button class="contactCard__remove">
         <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 16 16">
           <g transform="rotate(90 8 8)">
             <path fill="none" stroke="currentColor" stroke-linecap="round" stroke-linejoin="round" stroke-width="1.5" d="m11.25 4.75l-6.5 6.5m0-6.5l6.5 6.5" />
           </g>
         </svg>
-      </span>
+      </button>
       <div class="contactCard__content">
         <img class="contactCard__img" src="" alt="">
         <h3 class="contactCard__name"></h3>
@@ -215,8 +322,19 @@
   <script>
     const contactCard = document.querySelector('#contactCard').content;
     const contactList = document.querySelector('.contactList');
+    const seeAll = document.querySelector('.contacts__seeAll');
+    const manageInvitationsButton = document.querySelector('.pendingInvitations__manage');
+    const pendingButton = document.querySelector('.pendingInvitations__manage');
+    const pendingInvitation = document.querySelector('.pendingInvitation');
+    const pendingList = document.querySelector('.pendingList');
+
+    let pendingInvitationsCount = 0;
 
     fetchContacts(8);
+
+
+
+
 
     function fetchContacts(count) {
       return fetch('https://dummy-apis.netlify.app/api/contact-suggestions?count=' + count)
@@ -242,9 +360,27 @@
         mutualConnectionsText = contact.mutualConnections + ' mutual connections';
       }
       clone.querySelector('.contactCard__connections_count').textContent = mutualConnectionsText;
+
+      clone.querySelector('.contactCard__connect_button').addEventListener('click', managePendingInvitations);
       return clone;
     }
 
+    function managePendingInvitations() {
+      pendingInvitationsCount++;
+      let s = (pendingInvitationsCount > 1) ? 's' : '';
+      pendingInvitation.textContent = pendingInvitationsCount + ' pending Invitiation' + s;
+      this.textContent = 'Pending';
+
+      let thiscard = this.closest('.contactCard');
+      let clone = thiscard.cloneNode(true);
+      let width = getComputedStyle(thiscard).width;
+      console.log(width);
+      clone.style.width = width;
+      pendingList.appendChild(clone);
+      this.closest('.contactCard').remove();
+
+      fetchContacts(1);
+    }
 
     function renderContacts(contacts) {
       // contactList.innerHTML = '';
@@ -262,7 +398,9 @@
     }
 
 
-
+    seeAll.addEventListener('click', () => {
+      fetchContacts(20);
+    });
 
     function removeContactCard() {
       this.closest('.contactCard').remove();
