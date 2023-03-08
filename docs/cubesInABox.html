@@ -1,0 +1,91 @@
+<!DOCTYPE html>
+<html lang="en">
+
+<head>
+    <meta charset="UTF-8">
+    <meta http-equiv="X-UA-Compatible" content="IE=edge">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <script src="./js/color-console.js"></script>
+    <title>Cubes in a Box</title>
+</head>
+
+<body>
+
+
+    <script>
+
+        function f(x, y, z) {
+            const smallestSide = Math.min(x, y, z);
+            let cubeCount = 0;
+            console.log('LOOP STARTS HERE');
+
+            for (let cubeSize = 1; cubeSize <= smallestSide; cubeSize++) {
+                console.log('%ccubeSize: ', "color:dodgerblue", cubeSize);
+
+                // for each side we need to calculate the number of cubes that fits in
+                // the sidelength minus the cubesize gives us the number of positions
+                // the plus 1 is to include the position where the cube is placed
+                let xPositions = (x - cubeSize + 1);
+                let yPositions = (y - cubeSize + 1);
+                let zPositions = (z - cubeSize + 1);
+
+                console.log('yPositions: ', yPositions);
+                console.log('xPositions: ', xPositions);
+                console.log('zPositions: ', zPositions);
+
+                // now we have just to multiply the number of positions
+                cubeCount += yPositions * xPositions * zPositions;
+            } // end for loop
+
+            return cubeCount;
+        }
+
+        let count = f(3, 3, 3)
+        console.info('36', 36 - count);
+
+        console.log(' ');
+        console.log(' ');
+
+        count = f(2, 2, 3)
+        console.info('14', 14 - count);
+
+        console.log(' ');
+        console.log(' ');
+
+        count = f(3, 4, 2)
+        console.info('30', 30 - count);
+
+
+        // complete the line of numbers: 1,8,27,64,125,216,343,512,729,1000
+                      // // volume of cube in this iteration
+                // const cubeVolume = cubeSize ** 3;
+                // console.log('cubeVolume: ', cubeVolume);
+
+                // // number of cubes fits in the boxVolume
+                // const cubesInBox = Math.floor(boxVolume / cubeVolume);
+                // console.log('cubesInBox: ', cubesInBox);
+                // console.log(' '); // blank line
+
+                // add the number of cubes that fit to the total
+                // cubeCount += cubesInBox;
+
+                // [x, y, z].forEach((side) => {
+                //     let positions = Math.max(side - cubeSize - 1, 0);
+                //     console.log('side: ', side);
+                //     console.log('positions: ', positions);
+                //     positionCount += positions;
+                //     console.info('positionCount: ', positionCount);
+                //     console.log(' '); // blank line
+
+                // });
+                // cubeCount += positionCount;
+
+                // let y = Math.max(x - cubeSize - 1, 0) * Math.max(y - cubeSize - 0, 0);
+                // let x = Math.max(x - cubeSize - 1, 0) * Math.max(z - cubeSize - 0, 0);
+                // let z = Math.max(y - cubeSize - 1, 0) * Math.max(z - cubeSize - 0, 0);
+
+    </script>
+
+</body>
+
+</html>
