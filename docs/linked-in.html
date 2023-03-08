@@ -22,6 +22,10 @@
       background-color: var(--secondary-bg1);
     }
 
+    footer {
+      z-index: 2;
+    }
+
     .pendingInvitations {
       padding: 1rem;
       margin: 0;
@@ -95,7 +99,7 @@
 
     .contactList {
       display: grid;
-      grid-template-columns: repeat(auto-fit, minmax(200px, 1fr));
+      grid-template-columns: repeat(auto-fit, minmax(12.5rem, 1fr));
       grid-gap: 1rem;
     }
 
@@ -169,8 +173,8 @@
     }
 
     .contactCard__img {
-      width: 100px;
-      height: 100px;
+      width: 6.25rem;
+      height: 6.25rem;
       border-radius: 50%;
       object-fit: cover;
       z-index: 1;
@@ -232,7 +236,7 @@
       font-weight: 700;
       background-color: transparent;
       border: 1px solid var(--primary);
-      border-radius: 25px;
+      border-radius: 3rem;
       min-height: 2.2rem;
       transition: all 0.2s ease-in-out;
     }
@@ -290,7 +294,7 @@
   </footer>
 
   <template id="contactCard">
-    <div class="contactCard hide">
+    <article class="contactCard hide">
       <img class="contactCard__bg_img" src="" alt="">
       <button class="contactCard__remove">
         <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 16 16">
@@ -315,7 +319,7 @@
         </div>
         <button class="contactCard__connect_button">Connect</button>
       </div>
-    </div>
+    </article>
   </template>
 
   <script>
