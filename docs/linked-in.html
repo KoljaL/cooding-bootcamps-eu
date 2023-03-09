@@ -29,7 +29,7 @@
     .pendingInvitations {
       padding: 1rem;
       margin: 0;
-      margin-bottom: 1rem;
+      margin-block: 1rem;
       background-color: var(--secondary-bg);
       border: 1px solid var(--primary-lighter);
       border-radius: 0.5rem;
@@ -263,8 +263,16 @@
       <label class="theme-toggle" title="Toggle theme"></label>
     </span>
   </header>
-  <div class="spacer"></div>
 
+  <ul>
+    <li>
+      See all zu Button
+    </li>
+    <li>
+      Theme Toggle auch
+    </li>
+    <li>let zu const</li>
+  </ul>
   <div class="pendingInvitations">
     <div class="pendingInvitations__header">
       <div class="pendingInvitation">No pending Invitiations</div>
@@ -286,7 +294,7 @@
 
 
 
-  <div class="spacer"></div>
+
   <footer>
     <p>
       <a target="_blank" class="sourceCode" href="https://github.com/KoljaL/cooding-bootcamps-eu/tree/master/docs">Repo on GitHub</a>
@@ -324,6 +332,10 @@
 
   <script>
     const contactCard = document.querySelector('#contactCard').content;
+    const contactCard_ohneContent = document.querySelector('#contactCard');
+    console.log('contactCard_mitContent', contactCard);
+    console.log('contactCard_ohneContent', contactCard_ohneContent);
+
     const contactList = document.querySelector('.contactList');
     const seeAll = document.querySelector('.contacts__seeAll');
     const manageInvitationsButton = document.querySelector('.pendingInvitations__manage');
